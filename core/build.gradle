@@ -1,0 +1,26 @@
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = ["src/main/kotlin"]
+
+eclipse.project.name = appName + "-core"
+
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        allWarningsAsErrors = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+    implementation 'com.typesafe:config:1.4.3'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    implementation 'com.beust:klaxon:5.5'
+    testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.4.2'
+}

@@ -1,0 +1,218 @@
+[
+  {
+    "uniqueName": "player",
+    "logicClass": "pl.klolo.game.logic.player.PlayerLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "ship.png",
+    "x": 250.0,
+    "y": 50.0,
+    "width": 50.0,
+    "height": 60.0,
+    "layer": 3,
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "playerLifebar",
+    "logicClass": "pl.klolo.game.logic.player.PlayerLifeBarLogic",
+    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "file": "lifebar-background.png",
+    "width": 120,
+    "height": 20,
+    "layer": 2,
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "playerBonusBarLogic",
+    "logicClass": "pl.klolo.game.logic.bonus.PlayerBonusBarLogic",
+    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "file": "lifebar-background.png",
+    "width": 100,
+    "height": 20,
+    "layer": 2,
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "background",
+    "logicClass": "pl.klolo.game.logic.BackgroundLogic",
+    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "file": "background.jpg",
+    "layer": 1,
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "laserBlue01",
+    "logicClass": "pl.klolo.game.logic.BulletLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "laser/laserBlue01.png",
+    "x": 10.0,
+    "y": 10.0,
+    "width": 10,
+    "height": 50,
+    "layer": -1
+  },
+  {
+    "uniqueName": "laserBlue02",
+    "logicClass": "pl.klolo.game.logic.BulletLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "laser/laserBlue06.png",
+    "x": 10.0,
+    "y": 10.0,
+    "width": 13,
+    "height": 53,
+    "layer": -1
+  },
+  {
+    "uniqueName": "laserRed01",
+    "logicClass": "pl.klolo.game.logic.BulletLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "laser/laserRed01.png",
+    "x": 10.0,
+    "y": 10.0,
+    "width": 10,
+    "height": 50,
+    "layer": -1
+  },
+  {
+    "uniqueName": "enemyBase",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyGeneratorLogic",
+    "type": "ENTITY_WITH_LOGIC",
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "extraStarBonusGenerator",
+    "logicClass": "pl.klolo.game.logic.bonus.ExtraStarBonusGenerator",
+    "type": "ENTITY_WITH_LOGIC",
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "text",
+    "type": "TEXT_ENTITY",
+    "layer": 10
+  },
+  {
+    "uniqueName": "hud",
+    "logicClass": "pl.klolo.game.logic.HUDLogic",
+    "type": "ENTITY_WITH_LOGIC",
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "bonusManager",
+    "logicClass": "pl.klolo.game.logic.bonus.BonusGeneratorLogic",
+    "type": "ENTITY_WITH_LOGIC",
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "enemyRed1",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/enemyRed1.png",
+    "width": 30,
+    "height": 30,
+    "layer": -1
+  },
+  {
+    "uniqueName": "enemyRed2",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/enemyRed2.png",
+    "width": 40,
+    "height": 40,
+    "layer": -1
+  },
+  {
+    "uniqueName": "enemyRed3",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/enemyRed3.png",
+    "width": 50,
+    "height": 50,
+    "layer": -1
+  },
+  {
+    "uniqueName": "enemyRed4",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/enemyRed4.png",
+    "width": 60,
+    "height": 60,
+    "layer": -1
+  },
+  {
+    "uniqueName": "enemyRed5",
+    "logicClass": "pl.klolo.game.logic.enemy.EnemyLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/enemyRed5.png",
+    "width": 60,
+    "height": 60,
+    "layer": -1
+  },
+  {
+    "uniqueName": "medicineBonus",
+    "logicClass": "pl.klolo.game.logic.bonus.AdditionalLifeBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/pill_red.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "starBonus",
+    "logicClass": "pl.klolo.game.logic.bonus.AdditionalPointsBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/star_gold.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "superBulletBonus",
+    "logicClass": "pl.klolo.game.logic.bonus.SuperBulletBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/powerupBlue_bolt.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "shieldBonus",
+    "logicClass": "pl.klolo.game.logic.bonus.ShieldBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/powerupBlue_shield.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "shield1",
+    "logicClass": "pl.klolo.game.logic.ShieldLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "shield1.png",
+    "width": 110,
+    "height": 120,
+    "layer": 2,
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "doublePointsBonus",
+    "logicClass": "pl.klolo.game.logic.bonus.DoublePointsBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/powerupBlue_star.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "explosion",
+    "logicClass": "pl.klolo.game.logic.ParticleEntity",
+    "file": "explosion.p",
+    "type": "PARTICLE_ENTITY",
+    "layer": 2
+  },
+  {
+    "uniqueName": "engineFire",
+    "logicClass": "pl.klolo.game.logic.ParticleEntity",
+    "file": "fire.p",
+    "type": "PARTICLE_ENTITY",
+    "layer": 2
+  }
+]
