@@ -14,13 +14,13 @@ import pl.klolo.spaceshooter.game.logic.player.bonusLifetime
 import pl.klolo.spaceshooter.game.event.EnableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnableShield
 import pl.klolo.spaceshooter.game.event.EnableSuperBullet
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 
 private data class BonusBarItem(val sprite: Sprite, var enabled: Boolean = false, var since: Long = 0)
 
 class PlayerBonusBarLogic(
     private val entityRegistry: EntityRegistry,
-    private val eventProcessor: EventProcessor
+    private val eventBus: EventBus
 ) :
     EntityLogicWithRendering<SpriteWithCustomRendering> {
 
@@ -40,7 +40,7 @@ class PlayerBonusBarLogic(
         }
         useLighting = false
 
-        eventProcessor
+        eventBus
                 .subscribe(id)
                 .onEvent<EnableSuperBullet> {
                     icons[1].enabled = true

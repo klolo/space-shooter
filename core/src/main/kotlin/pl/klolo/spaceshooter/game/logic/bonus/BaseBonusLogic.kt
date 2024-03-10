@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.event.Event
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.Collision
 import pl.klolo.spaceshooter.game.common.addForeverSequence
 import pl.klolo.spaceshooter.game.common.addSequence
@@ -21,7 +21,7 @@ import pl.klolo.spaceshooter.game.engine.ProfileHolder
 
 abstract class BaseBonusLogic(
     private val profileHolder: ProfileHolder,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val gameLighting: GameLighting,
     private val gamePhysics: GamePhysics
 ) : EntityLogic<SpriteEntityWithLogic> {
@@ -30,7 +30,7 @@ abstract class BaseBonusLogic(
     private lateinit var physicsShape: CircleShape
     private lateinit var body: Body
     private var ignoreNextCollision = false
-    private val bonusSpeed = 15f
+    private val bonusSpeed = 20f
 
     abstract fun getEventToSendOnCollisionWithPlayer(): Event;
 
@@ -48,7 +48,7 @@ abstract class BaseBonusLogic(
             execute { shouldBeRemove = true }
         )
 
-        eventProcessor.subscribe(id)
+        eventBus.subscribe(id)
             .onEvent<Collision> {
                 val collidedEntity = it.entity!!
 
@@ -58,7 +58,7 @@ abstract class BaseBonusLogic(
                     addSequence(
                         scaleTo(0.01f, 0.01f, 0.2f, Interpolation.linear),
                         execute {
-                            eventProcessor.sendEvent(getEventToSendOnCollisionWithPlayer())
+                            eventBus.sendEvent(getEventToSendOnCollisionWithPlayer())
                             shouldBeRemove = true
                         }
                     )

@@ -6,7 +6,7 @@ import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.entity.kind.TextEntity
 import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.common.addSequence
 import pl.klolo.spaceshooter.game.common.execute
@@ -20,7 +20,7 @@ data class PopupMessageConfiguration(
 
 class PopupMessages(
     private val entityRegistry: EntityRegistry,
-    private val eventProcessor: EventProcessor
+    private val eventBus: EventBus
 ) {
 
     private var messageLabel: TextEntity? = null
@@ -34,7 +34,7 @@ class PopupMessages(
         messageLabel = createEntity<TextEntity>(textEntityConfiguration)
                 .apply {
                     text = popupMessageConfiguration.message
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                     intializeFont()
                     labelColor = popupMessageConfiguration.color
                 }

@@ -27,19 +27,20 @@ import pl.klolo.spaceshooter.game.event.Collision
 import pl.klolo.spaceshooter.game.event.DisableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnemyDestroyed
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 
 
 class EnemyLogic(
     private val entityRegistry: EntityRegistry,
     private val gamePhysics: GamePhysics,
-    private val eventProcessor: EventProcessor,
-    private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
+    private val eventBus: EventBus,
+    private val gameLighting: GameLighting
+) : EntityLogic<SpriteEntityWithLogic> {
 
     private val explosionConfiguration = entityRegistry.getConfigurationById("explosion")
     private var explosionLights = ExplosionEffect(gameLighting, 50f)
-    private var popupMessages: PopupMessages = PopupMessages(entityRegistry, eventProcessor)
+    private var popupMessages: PopupMessages = PopupMessages(entityRegistry, eventBus)
 
     private var explosion: ParticleEntity? = null
     private var light: PointLight? = null
@@ -67,36 +68,40 @@ class EnemyLogic(
         light = gameLighting.createPointLight(50, Colors.redLight, lightDistance, x, y)
 
         life = uniqueName
-                .elementAt(uniqueName.lastIndex)
-                .toString()
-                .toInt() * lifeFactory
+            .elementAt(uniqueName.lastIndex)
+            .toString()
+            .toInt() * lifeFactory
 
         createPhysics()
 
         addSequence(
-                moveTo(x, -1 * height, speed),
-                execute { onDestroy() }
+            moveTo(x, -1 * height, speed),
+            execute { onDestroy() }
         )
 
         addForeverSequence(
-                delay(shootDelay),
-                execute { shootOnPosition(laserConfiguration) }
+            delay(shootDelay),
+            execute { shootOnPosition(laserConfiguration) }
         )
 
-        eventProcessor
-                .subscribe(id)
-                .onEvent<Collision> {
-                    val collidedEntity = it.entity!!
-                    if (isPlayerLaser(collidedEntity) && display) {
-                        onCollisionWithLaser(collidedEntity as SpriteEntityWithLogic)
-                    }
-                }
-                .onEvent<EnableDoublePoints> {
-                    doublePoints = true
-                }
-                .onEvent<DisableDoublePoints> {
-                    doublePoints = false
-                }
+        eventBus
+            .subscribe(id)
+            .onEvent<Collision> { onCollision(it) }
+            .onEvent<EnableDoublePoints> { doublePoints = true }
+            .onEvent<DisableDoublePoints> { doublePoints = false }
+    }
+
+    private fun SpriteEntityWithLogic.onCollision(it: Collision) {
+        val collidedEntity = it.entity!! as SpriteEntityWithLogic
+        if (isPlayerLaser(collidedEntity) && display) {
+            life -= (collidedEntity.logic as BulletLogic).bulletPower
+
+            if (life <= 0) {
+                onDestroyEnemy()
+            } else {
+                explosionLights.addLight(this)
+            }
+        }
     }
 
     private fun SpriteEntityWithLogic.shootOnPosition(laserConfiguration: EntityConfiguration) {
@@ -116,18 +121,7 @@ class EnemyLogic(
         bulletLogic.apply {
             initialize.invoke(bulletEntity)
         }
-        eventProcessor.sendEvent(RegisterEntity(bulletEntity))
-    }
-
-    private fun SpriteEntityWithLogic.onCollisionWithLaser(collidedEntity: SpriteEntityWithLogic) {
-        life -= (collidedEntity.logic as BulletLogic).bulletPower
-
-        if (life <= 0) {
-            onDestroyEnemy()
-        }
-        else {
-            explosionLights.addLight(this)
-        }
+        eventBus.sendEvent(RegisterEntity(bulletEntity))
     }
 
     private fun SpriteEntityWithLogic.onDestroyEnemy() {
@@ -135,19 +129,19 @@ class EnemyLogic(
         showExplosion()
         showPopup()
 
-        executeAfterDelay(0.2f) { eventProcessor.sendEvent(EnemyDestroyed(x, y)) }
+        executeAfterDelay(0.2f) { eventBus.sendEvent(EnemyDestroyed(x, y)) }
 
         onDispose()
         display = false
-        eventProcessor.sendEvent(AddPoints(height.toInt()))
+        eventBus.sendEvent(AddPoints(height.toInt()))
     }
 
     private fun SpriteEntityWithLogic.showPopup() {
         val popupMessageConfiguration = PopupMessageConfiguration(
-                message = "+${if (doublePoints) height.toInt() * 2 else height.toInt()}",
-                callback = {
-                    onDestroy()
-                }
+            message = "+${if (doublePoints) height.toInt() * 2 else height.toInt()}",
+            callback = {
+                onDestroy()
+            }
         )
         popupMessages.show(this, popupMessageConfiguration)
     }
@@ -159,9 +153,9 @@ class EnemyLogic(
         explosion.apply {
             this!!.effect.setPosition(currentX, currentY)
         }
-        eventProcessor.sendEvent(RegisterEntity(explosion))
+        eventBus.sendEvent(RegisterEntity(explosion))
         light?.color = Colors.redLight
-        val explosionLightFadeOutTime = 0.35f
+        val explosionLightFadeOutTime = 35f
         addAction(fadeOut(explosionLightFadeOutTime))
     }
 

@@ -2,12 +2,12 @@ package pl.klolo.game.logic
 
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.logic.player.move.AndroidPlayerMoveLogic
 
 internal class AndroidPlayerMoveLogicTest : ShouldSpec({
 
-    val sut = AndroidPlayerMoveLogic(EventProcessor())
+    val sut = AndroidPlayerMoveLogic(EventBus())
 
     "stand in place when acceleroment is smaller than 1" {
         val speed = sut.getPlayerMoveDuration(0.1f, 10f)

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import pl.klolo.spaceshooter.game.engine.Profile
 import pl.klolo.spaceshooter.game.engine.GameEngine.Companion.applicationConfiguration
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.common.execute
 
 
@@ -15,18 +15,18 @@ enum class Direction { LEFT, RIGHT, NONE }
 interface PlayerMoveLogic {
     val initialize: SpriteEntityWithLogic.() -> Unit
     val onUpdate: SpriteEntityWithLogic.(Float) -> Unit
-    val createSubscription: SpriteEntityWithLogic.() -> EventProcessor.Subscription
+    val createSubscription: SpriteEntityWithLogic.() -> EventBus.Subscription
 }
 
-fun getMoveLogicImplementation(profile: Profile, eventProcessor: EventProcessor): PlayerMoveLogic {
+fun getMoveLogicImplementation(profile: Profile, eventBus: EventBus): PlayerMoveLogic {
     return when (profile) {
-        Profile.ANDROID -> AndroidPlayerMoveLogic(eventProcessor)
-        Profile.DESKTOP -> DesktopPlayerMoveLogic(eventProcessor)
+        Profile.ANDROID -> AndroidPlayerMoveLogic(eventBus)
+        Profile.DESKTOP -> DesktopPlayerMoveLogic(eventBus)
         else -> throw IllegalArgumentException("Profile not supported")
     }
 }
 
-abstract class BasePlayerMove(private val eventProcessor: EventProcessor) {
+abstract class BasePlayerMove(private val eventBus: EventBus) {
 
     protected val playerSpeed = applicationConfiguration.getConfig("engine")
             .getDouble("playerSpeed")

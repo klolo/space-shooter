@@ -12,14 +12,14 @@ import pl.klolo.spaceshooter.game.logic.enemy.ExplosionEffect
 import pl.klolo.spaceshooter.game.physics.GamePhysics
 import pl.klolo.spaceshooter.game.event.DisableShield
 import pl.klolo.spaceshooter.game.event.EnableShield
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.LaserHitInShield
 import pl.klolo.spaceshooter.game.event.PlaySound
 import pl.klolo.spaceshooter.game.event.PlayerChangePosition
 
 class ShieldLogic(
     private val gamePhysics: GamePhysics,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
 
     private var explosionLights = ExplosionEffect(gameLighting, 200f, blueLight)
@@ -29,7 +29,7 @@ class ShieldLogic(
     override val initialize: SpriteEntityWithLogic.() -> Unit = {
         useLighting = false
 
-        eventProcessor
+        eventBus
                 .subscribe(id)
                 .onEvent<PlayerChangePosition> {
                     x = it.x - width / 2
@@ -50,7 +50,7 @@ class ShieldLogic(
                         return@onEvent
                     }
 
-                    eventProcessor.sendEvent(PlaySound(SoundEffect.SHIELD_COLLISION))
+                    eventBus.sendEvent(PlaySound(SoundEffect.SHIELD_COLLISION))
                     explosionLights.addLightOnPosition(this, it.x, it.y)
                 }
 

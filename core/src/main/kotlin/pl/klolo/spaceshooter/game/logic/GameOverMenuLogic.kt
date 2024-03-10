@@ -12,7 +12,7 @@ import pl.klolo.spaceshooter.game.entity.Entity
 import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PressedEnter
 import pl.klolo.spaceshooter.game.event.PressedEscape
 import pl.klolo.spaceshooter.game.event.RegisterEntity
@@ -21,7 +21,7 @@ import pl.klolo.spaceshooter.game.event.StartNewGame
 class GameOverMenuLogic<T : Entity>(
     private val profileHolder: ProfileHolder,
     private val highscore: Highscore,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<T>, Actor() {
 
@@ -35,9 +35,9 @@ class GameOverMenuLogic<T : Entity>(
         Gdx.app.debug(this.javaClass.name, "createSubscription")
 
         executeAfterDelay(activateNavigationTime) {
-            eventProcessor
+            eventBus
                     .subscribe(id)
-                    .onEvent<PressedEnter> { eventProcessor.sendEvent(StartNewGame) }
+                    .onEvent<PressedEnter> { eventBus.sendEvent(StartNewGame) }
                     .onEvent<PressedEscape> { Gdx.app.exit() }
         }
 
@@ -58,7 +58,7 @@ class GameOverMenuLogic<T : Entity>(
                 .apply {
                     text = "Game over"
                     fontSize = FontSize.HUGE
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                     intializeFont()
                 }
                 .apply {
@@ -74,7 +74,7 @@ class GameOverMenuLogic<T : Entity>(
                 .apply {
                     text = "Your score: ${highscore.getLastScore()}\n\nBest score: ${highscore.getRecord()}"
                     fontSize = FontSize.SMALL
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                     intializeFont()
                 }
                 .apply {
@@ -88,7 +88,7 @@ class GameOverMenuLogic<T : Entity>(
                 .apply {
                     text = if (profileHolder.activeProfile == Profile.ANDROID) "touch to start" else "press enter for start, escape for exit"
                     fontSize = FontSize.SMALL
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                 }
                 .apply {
                     intializeFont()

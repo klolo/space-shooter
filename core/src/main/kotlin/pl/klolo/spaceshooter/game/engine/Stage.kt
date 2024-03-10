@@ -10,7 +10,7 @@ import pl.klolo.spaceshooter.game.entity.Entity
 import pl.klolo.spaceshooter.game.entity.EntityConfiguration
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.GameOver
 import pl.klolo.spaceshooter.game.event.OpenMainMenu
 import pl.klolo.spaceshooter.game.event.RegisterEntity
@@ -21,7 +21,7 @@ class Stage(
     private val soundManager: SoundManager,
     private val gamePhysics: GamePhysics,
     private val entityRegistry: EntityRegistry,
-    private val eventProcessor: EventProcessor
+    private val eventBus: EventBus
 ) {
 
     private var entities = emptyList<Entity>()
@@ -34,7 +34,7 @@ class Stage(
     }
 
     private fun subscribe() {
-        eventProcessor
+        eventBus
             .subscribe(-1)
             .onEvent<OpenMainMenu> {
                 switchStage("entities/menu-entities.json")
@@ -69,7 +69,7 @@ class Stage(
     }
 
     private fun disposeCurrentStageEntities() {
-        eventProcessor.clearAllSubscription()
+        eventBus.clearAllSubscription()
         gamePhysics.onDispose()
 
         Gdx.app.debug(this.javaClass.name, "clearing entities")

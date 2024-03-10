@@ -9,13 +9,13 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import pl.klolo.spaceshooter.game.engine.inputProcessor.KeyboardProcessor
 import pl.klolo.spaceshooter.game.engine.inputProcessor.TouchProcessor
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.game.physics.GameLighting
 import pl.klolo.spaceshooter.game.physics.GamePhysics
 
 class GameEngine internal constructor(
     private val profileHolder: ProfileHolder,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val gamePhysics: GamePhysics,
     private val gameLighting: GameLighting,
     private val stage: Stage
@@ -37,8 +37,8 @@ class GameEngine internal constructor(
     override fun create() {
         Gdx.input.inputProcessor =
             when (profileHolder.activeProfile) {
-                Profile.DESKTOP, Profile.WEB -> KeyboardProcessor(eventProcessor)
-                Profile.ANDROID -> TouchProcessor(eventProcessor)
+                Profile.DESKTOP, Profile.WEB -> KeyboardProcessor(eventBus)
+                Profile.ANDROID -> TouchProcessor(eventBus)
             }
 
         Gdx.app.logLevel = getConfig("engine").getInt("logLevel")

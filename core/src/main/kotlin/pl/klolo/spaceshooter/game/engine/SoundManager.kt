@@ -3,7 +3,7 @@ package pl.klolo.spaceshooter.game.engine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PlaySound
 import pl.klolo.spaceshooter.game.event.StopMusic
 
@@ -21,7 +21,7 @@ enum class SoundEffect(val filename: String) {
     DESTROY_PLAYER("sound/destroy.wav")
 }
 
-class SoundManager(private val eventProcessor: EventProcessor) {
+class SoundManager(private val eventBus: EventBus) {
     private var currentMusic: Music? = null
 
     private var musicVolume = GameEngine.applicationConfiguration.getConfig("sound")
@@ -42,7 +42,7 @@ class SoundManager(private val eventProcessor: EventProcessor) {
             return
         }
 
-        eventProcessor
+        eventBus
                 .subscribe(-2)
                 .onEvent<PlaySound> {
                     sounds[it.soundEffect]?.play(musicVolume)

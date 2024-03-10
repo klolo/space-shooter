@@ -7,11 +7,11 @@ import pl.klolo.spaceshooter.game.entity.createEntity
 import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.event.EnemyDestroyed
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 
 class ExtraStarBonusGenerator(
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
@@ -20,12 +20,12 @@ class ExtraStarBonusGenerator(
     override val initialize: EntityWithLogic.() -> Unit = {
         starConfiguration = entityRegistry.getConfigurationById("starBonus")
 
-        eventProcessor
+        eventBus
                 .subscribe(id)
                 .onEvent<EnemyDestroyed> {
                     val entity: SpriteEntityWithLogic = createEntityOnPosition(it.x, it.y)
                     entity.logic.apply { initialize.invoke(entity) }
-                    eventProcessor.sendEvent(RegisterEntity(entity))
+                    eventBus.sendEvent(RegisterEntity(entity))
                 }
     }
 

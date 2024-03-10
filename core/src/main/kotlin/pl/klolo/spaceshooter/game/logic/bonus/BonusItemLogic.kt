@@ -10,15 +10,15 @@ import pl.klolo.spaceshooter.game.event.EnableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnableShield
 import pl.klolo.spaceshooter.game.event.EnableSuperBullet
 import pl.klolo.spaceshooter.game.event.Event
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PlaySound
 
 class AdditionalLifeBonusLogic(
     profileHolder: ProfileHolder,
-    eventProcessor: EventProcessor,
+    eventBus: EventBus,
     gameLighting: GameLighting,
     gamePhysics: GamePhysics
-) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+) : BaseBonusLogic(profileHolder, eventBus, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return AddPlayerLife(20)
@@ -27,26 +27,26 @@ class AdditionalLifeBonusLogic(
 
 class AdditionalPointsBonusLogic(
     profileHolder: ProfileHolder,
-    val eventProcessor: EventProcessor,
+    val eventBus: EventBus,
     gameLighting: GameLighting,
     gamePhysics: GamePhysics
-) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+) : BaseBonusLogic(profileHolder, eventBus, gameLighting, gamePhysics) {
 
     companion object {
         const val additionalPoints = 100
     }
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
-        eventProcessor.sendEvent(PlaySound(SoundEffect.YIPEE))
+        eventBus.sendEvent(PlaySound(SoundEffect.YIPEE))
         return AddPoints(additionalPoints)
     }
 }
 
 class SuperBulletBonusLogic(
     profileHolder: ProfileHolder,
-    eventProcessor: EventProcessor,
+    eventBus: EventBus,
     gameLighting: GameLighting, gamePhysics: GamePhysics
-) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+) : BaseBonusLogic(profileHolder, eventBus, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableSuperBullet
@@ -55,10 +55,10 @@ class SuperBulletBonusLogic(
 
 class ShieldBonusLogic(
     profileHolder: ProfileHolder,
-    eventProcessor: EventProcessor,
+    eventBus: EventBus,
     gameLighting: GameLighting,
     gamePhysics: GamePhysics
-) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+) : BaseBonusLogic(profileHolder, eventBus, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableShield
@@ -67,10 +67,10 @@ class ShieldBonusLogic(
 
 class DoublePointsBonusLogic(
     profileHolder: ProfileHolder,
-    eventProcessor: EventProcessor,
+    eventBus: EventBus,
     gameLighting: GameLighting,
     gamePhysics: GamePhysics
-) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+) : BaseBonusLogic(profileHolder, eventBus, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableDoublePoints

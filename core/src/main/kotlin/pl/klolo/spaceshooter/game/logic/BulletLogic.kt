@@ -18,7 +18,7 @@ import pl.klolo.spaceshooter.game.entity.isExtraBonus
 import pl.klolo.spaceshooter.game.entity.isPlayerByName
 import pl.klolo.spaceshooter.game.entity.isShieldByName
 import pl.klolo.spaceshooter.game.event.Collision
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.LaserHitInShield
 import java.util.*
 
@@ -26,7 +26,7 @@ enum class Direction { DOWN, UP }
 
 class BulletLogic(
     private val gamePhysics: GamePhysics,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
 
     lateinit var bulletLight: PointLight
@@ -54,7 +54,7 @@ class BulletLogic(
         )
 
         executeAfterDelay(0.25f) {
-            eventProcessor
+            eventBus
                     .subscribe(id)
                     .onEvent<Collision> {
                         onCollision(it)
@@ -74,7 +74,7 @@ class BulletLogic(
             shouldBeRemove = (enemyHitPlayer || playerHitEnemy || enemyHitShield) && !hitBonus
 
             if (enemyHitShield) {
-                eventProcessor.sendEvent(LaserHitInShield(it.x, it.y))
+                eventBus.sendEvent(LaserHitInShield(it.x, it.y))
             }
         }
     }

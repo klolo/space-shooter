@@ -47,7 +47,8 @@ object OpenMainMenu : Event()
 class Collision(
         val entity: Entity? = null,  // collided object
         val x: Float = 0f,  // collision position
-        val y: Float = 0f) : Event() // collision position
+        val y: Float = 0f
+) : Event() // collision position
 
 class PlaySound(val soundEffect: SoundEffect? = null) : Event()
 object StopMusic : Event()

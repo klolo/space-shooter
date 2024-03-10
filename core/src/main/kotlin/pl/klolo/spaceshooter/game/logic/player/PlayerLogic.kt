@@ -37,7 +37,7 @@ import pl.klolo.spaceshooter.game.event.DisableSuperBullet
 import pl.klolo.spaceshooter.game.event.EnableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnableShield
 import pl.klolo.spaceshooter.game.event.EnableSuperBullet
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.GameOver
 import pl.klolo.spaceshooter.game.event.PlaySound
 import pl.klolo.spaceshooter.game.event.PressedSpace
@@ -51,13 +51,13 @@ class PlayerLogic(
     private val highscore: Highscore,
     private val gamePhysics: GamePhysics,
     private val entityRegistry: EntityRegistry,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val gameLighting: GameLighting
 ) : EntityLogic<SpriteEntityWithLogic> {
 
     private var explosionLights = ExplosionEffect(gameLighting, 100f)
-    private val popupMessages = PopupMessages(entityRegistry, eventProcessor)
-    private var moveLogic = getMoveLogicImplementation(profileHolder.activeProfile, eventProcessor)
+    private val popupMessages = PopupMessages(entityRegistry, eventBus)
+    private var moveLogic = getMoveLogicImplementation(profileHolder.activeProfile, eventBus)
     private lateinit var engineFire: ParticleEntity
 
     private var hasShield = false
@@ -106,12 +106,12 @@ class PlayerLogic(
                 onAddPlayerLife(it)
             }
             .onEvent<EnableSuperBullet> {
-                eventProcessor.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
+                eventBus.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
                 enableSuperBullet()
                 executeAfterDelay(bonusLifetime) { disableSuperBullet() }
             }
             .onEvent<EnableShield> {
-                eventProcessor.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
+                eventBus.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
                 hasShield = true
 
                 if (disableShieldAction != null) {
@@ -120,18 +120,18 @@ class PlayerLogic(
 
                 disableShieldAction = executeAfterDelay(bonusLifetime) {
                     hasShield = false
-                    eventProcessor.sendEvent(DisableShield)
+                    eventBus.sendEvent(DisableShield)
                 }
             }
             .onEvent<EnableDoublePoints> {
-                eventProcessor.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
+                eventBus.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
                 doublePoints = true
 
                 popupMessages.show(this, PopupMessageConfiguration("x2"))
                 executeAfterDelay(bonusLifetime) {
                     doublePoints = false
                     popupMessages.show(this, PopupMessageConfiguration("x1"))
-                    eventProcessor.sendEvent(DisableDoublePoints)
+                    eventBus.sendEvent(DisableDoublePoints)
                 }
             }
 
@@ -142,7 +142,7 @@ class PlayerLogic(
     private fun createEngineFire() {
         val engineFireConfiguration = entityRegistry.getConfigurationById("engineFire")
         engineFire = createEntity(engineFireConfiguration)
-        eventProcessor.sendEvent(RegisterEntity(engineFire))
+        eventBus.sendEvent(RegisterEntity(engineFire))
     }
 
     private fun addPoints(it: AddPoints) {
@@ -158,10 +158,10 @@ class PlayerLogic(
         if (lifeLevel > 100) {
             lifeLevel = 100
         } else {
-            eventProcessor.sendEvent(PlaySound(SoundEffect.YIPEE))
+            eventBus.sendEvent(PlaySound(SoundEffect.YIPEE))
         }
 
-        eventProcessor.sendEvent(ChangePlayerLfeLevel(lifeLevel))
+        eventBus.sendEvent(ChangePlayerLfeLevel(lifeLevel))
         popupMessages.show(this, PopupMessageConfiguration("+${it.lifeAmount}%"))
     }
 
@@ -185,14 +185,14 @@ class PlayerLogic(
             bulletPower = defaultBulletPower
             playerLight.distance = 70f
             playerLight.color = blueLight
-            eventProcessor.sendEvent(DisableSuperBullet)
+            eventBus.sendEvent(DisableSuperBullet)
         }
     }
 
     private fun SpriteEntityWithLogic.onCollision(it: Collision) {
         val collidedEntity = it.entity!!
         if (isEnemyLaser(collidedEntity) && !hasShield && !isImmortal) {
-            eventProcessor.sendEvent(PlaySound(SoundEffect.PLAYER_COLLISION))
+            eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_COLLISION))
 
             lifeLevel -= 10
             popupMessages.show(this, PopupMessageConfiguration("-10%", Colors.orange))
@@ -204,7 +204,7 @@ class PlayerLogic(
             }
 
             explosionLights.addLight(this)
-            eventProcessor.sendEvent(ChangePlayerLfeLevel(lifeLevel))
+            eventBus.sendEvent(ChangePlayerLfeLevel(lifeLevel))
             isImmortal = true
 
             if (lifeLevel <= 0) {
@@ -221,14 +221,14 @@ class PlayerLogic(
     private fun SpriteEntityWithLogic.onGameOver() {
         highscore.setLastScore(points)
 
-        eventProcessor.sendEvent(StopMusic)
-        eventProcessor.sendEvent(PlaySound(SoundEffect.DESTROY_PLAYER))
+        eventBus.sendEvent(StopMusic)
+        eventBus.sendEvent(PlaySound(SoundEffect.DESTROY_PLAYER))
 
         playerLight.distance *= 200
         display = false
 
         executeAfterDelay(0.15f) {
-            eventProcessor.sendEvent(GameOver)
+            eventBus.sendEvent(GameOver)
         }
     }
 
@@ -251,8 +251,8 @@ class PlayerLogic(
             }
         }
 
-        eventProcessor.sendEvent(RegisterEntity(bulletEntity))
-        eventProcessor.sendEvent(PlaySound(SoundEffect.PLAYER_SHOOT))
+        eventBus.sendEvent(RegisterEntity(bulletEntity))
+        eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_SHOOT))
     }
 
     override val onUpdate: SpriteEntityWithLogic.(Float) -> Unit = {

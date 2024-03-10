@@ -15,7 +15,7 @@ import pl.klolo.spaceshooter.game.engine.SoundManager
 import pl.klolo.spaceshooter.game.entity.Entity
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PressedEnter
 import pl.klolo.spaceshooter.game.event.PressedEscape
 import pl.klolo.spaceshooter.game.event.RegisterEntity
@@ -38,7 +38,7 @@ class MainMenuLogic<T : Entity>(
     private val profileHolder: ProfileHolder,
     private val gameLighting: GameLighting,
     private val soundManager: SoundManager,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<T> {
 
@@ -51,9 +51,9 @@ class MainMenuLogic<T : Entity>(
     override val initialize: T.() -> Unit = {
         Gdx.app.debug(this.javaClass.name, "createSubscription")
 
-        eventProcessor
+        eventBus
                 .subscribe(id)
-                .onEvent<PressedEnter> { eventProcessor.sendEvent(StartNewGame) }
+                .onEvent<PressedEnter> { eventBus.sendEvent(StartNewGame) }
                 .onEvent<PressedEscape> { Gdx.app.exit() }
 
         soundManager.playSong(Song.MENU)
@@ -75,7 +75,7 @@ class MainMenuLogic<T : Entity>(
                 Gdx.graphics.width.toFloat() / 2, gameLogo.y + gameLogo.height / 2)
         pulsingLightAnimation = PulsingLightAnimation(logoLight).apply { distanceGrow = 500 }
 
-        eventProcessor.sendEvent(RegisterEntity(gameLogo))
+        eventBus.sendEvent(RegisterEntity(gameLogo))
     }
 
     override val onDispose: T.() -> Unit = {
@@ -92,7 +92,7 @@ class MainMenuLogic<T : Entity>(
                 .apply {
                     fontSize = FontSize.HUGE
                     text = "kotlin wars"
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                 }
                 .apply {
                     intializeFont()
@@ -108,7 +108,7 @@ class MainMenuLogic<T : Entity>(
                 .apply {
                     text = if (profileHolder.activeProfile == Profile.ANDROID) "touch to start" else "press enter for start, escape for exit"
                     fontSize = FontSize.SMALL
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                 }
                 .apply {
                     intializeFont()

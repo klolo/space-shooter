@@ -1,16 +1,16 @@
 package pl.klolo.spaceshooter.game.event
 
-class EventProcessor {
+class EventBus {
     private val subscription = mutableMapOf<Event, MutableList<Pair<Int /*ID*/, (Event) -> Unit>>>()
 
     fun subscribe(id: Int): Subscription {
         return Subscription(id, this)
     }
 
-    class Subscription(val id: Int, val eventProcessor: EventProcessor) {
+    class Subscription(val id: Int, val eventBus: EventBus) {
 
         fun onEvent(event: Event, eventConsumer: (Event) -> Unit): Subscription {
-            eventProcessor.onEvent(event, id, eventConsumer)
+            eventBus.onEvent(event, id, eventConsumer)
             return this
         }
 
@@ -19,7 +19,7 @@ class EventProcessor {
             val eventInstance =
                 if (T::class.objectInstance != null) T::class.objectInstance
                 else T::class.java.getDeclaredConstructor().newInstance()
-            eventProcessor.onEvent(eventInstance as Event, id, eventConsumer as (Event) -> Unit)
+            eventBus.onEvent(eventInstance as Event, id, eventConsumer as (Event) -> Unit)
             return this
         }
     }

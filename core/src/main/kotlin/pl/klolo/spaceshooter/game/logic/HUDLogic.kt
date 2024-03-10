@@ -7,14 +7,14 @@ import pl.klolo.spaceshooter.game.entity.kind.TextEntity
 import pl.klolo.spaceshooter.game.entity.createEntity
 import pl.klolo.spaceshooter.game.event.AddPoints
 import pl.klolo.spaceshooter.game.event.EnableDoublePoints
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.common.executeAfterDelay
 import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.logic.player.bonusLifetime
 
 class HUDLogic(
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
@@ -27,7 +27,7 @@ class HUDLogic(
         return createEntity<TextEntity>(textConfiguration)
             .apply {
                 text = "0"
-                eventProcessor.sendEvent(RegisterEntity(this))
+                eventBus.sendEvent(RegisterEntity(this))
                 intializeFont()
             }
     }
@@ -36,7 +36,7 @@ class HUDLogic(
         return createEntity<TextEntity>(textConfiguration)
             .apply {
                 text = ""
-                eventProcessor.sendEvent(RegisterEntity(this))
+                eventBus.sendEvent(RegisterEntity(this))
                 intializeFont()
             }
     }
@@ -48,7 +48,7 @@ class HUDLogic(
     override val initialize: EntityWithLogic.() -> Unit = {
         Gdx.app.debug(this.javaClass.name, "createSubscription")
 
-        eventProcessor
+        eventBus
             .subscribe(id)
             .onEvent<AddPoints> {
                 addPoints(it)
@@ -63,7 +63,7 @@ class HUDLogic(
     }
 
     override val onUpdate: EntityWithLogic.(Float) -> Unit = {
-        val leftMargin = 10f
+        val leftMargin = 20f
         pointsLabel.setPosition(
             leftMargin,
             Gdx.graphics.height.toFloat() - pointsLabel.getFontHeight() * 1.2f

@@ -2,7 +2,7 @@ package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.assets.AssetManager
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.physics.ContactListener
 import pl.klolo.game.physics.GameLighting
 import pl.klolo.spaceshooter.game.physics.GamePhysics
@@ -20,7 +20,7 @@ fun createGameEngine(profile: Profile): GameEngine {
             .apply {
                 registerBean(EntityRegistry::class.java)
                 registerBean(ProfileHolder(profile))
-                registerBean(EventProcessor::class.java)
+                registerBean(EventBus::class.java)
                 registerBean(Highscore::class.java)
                 registerBean(SoundManager::class.java)
                 registerBean(ContactListener::class.java)

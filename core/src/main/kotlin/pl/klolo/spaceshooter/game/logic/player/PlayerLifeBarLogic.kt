@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import pl.klolo.spaceshooter.game.engine.assetManager
 import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.ChangePlayerLfeLevel
 import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
 
-class PlayerLifeBarLogic(private val eventProcessor: EventProcessor) :
+class PlayerLifeBarLogic(private val eventBus: EventBus) :
     EntityLogicWithRendering<SpriteWithCustomRendering> {
     private lateinit var fill: Sprite
     private lateinit var background: Sprite
@@ -33,7 +33,7 @@ class PlayerLifeBarLogic(private val eventProcessor: EventProcessor) :
         width = entityConfiguration.width
         height = entityConfiguration.height
 
-        eventProcessor
+        eventBus
                 .subscribe(id)
                 .onEvent<ChangePlayerLfeLevel> {
                     lifeAmount = it.actualPlayerLifeLevel / 100f
@@ -57,8 +57,8 @@ class PlayerLifeBarLogic(private val eventProcessor: EventProcessor) :
     }
 
     override val onUpdate: SpriteWithCustomRendering.(Float) -> Unit = {
-        x = Gdx.graphics.width.toFloat() - entityConfiguration.width * 1.1f
+        x = Gdx.graphics.width.toFloat() - entityConfiguration.width - 20.0f
         width = Math.max(0f, (entityConfiguration.width * 0.9f) * lifeAmount)
-        y = Gdx.graphics.height.toFloat() - height * 1.3f
+        y = Gdx.graphics.height.toFloat() - height - 20.0f
     }
 }

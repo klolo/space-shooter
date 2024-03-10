@@ -3,7 +3,7 @@ package pl.klolo.spaceshooter.game.logic.bonus
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityConfiguration
@@ -30,7 +30,7 @@ fun createItem(bonusItemConfiguration: EntityConfiguration): SpriteEntityWithLog
 }
 
 class BonusGeneratorLogic(
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
     private val random = Random()
@@ -39,9 +39,9 @@ class BonusGeneratorLogic(
         listOf(
                 entityRegistry.getConfigurationById("medicineBonus") to 10,
                 entityRegistry.getConfigurationById("starBonus") to 2,
-                entityRegistry.getConfigurationById("superBulletBonus") to 50,
-                entityRegistry.getConfigurationById("shieldBonus") to 50,
-                entityRegistry.getConfigurationById("doublePointsBonus") to 50
+                entityRegistry.getConfigurationById("superBulletBonus") to 20,
+                entityRegistry.getConfigurationById("shieldBonus") to 20,
+                entityRegistry.getConfigurationById("doublePointsBonus") to 20
         )
     }
 
@@ -54,7 +54,7 @@ class BonusGeneratorLogic(
                             val randomItem = getRandomItemConfiguration()
                             if (shouldCreateItem(randomItem.second)) {
                                 val enemyEntity = createItem(randomItem.first)
-                                eventProcessor.sendEvent(RegisterEntity(enemyEntity))
+                                eventBus.sendEvent(RegisterEntity(enemyEntity))
                             }
                         },
                         delay(1f)

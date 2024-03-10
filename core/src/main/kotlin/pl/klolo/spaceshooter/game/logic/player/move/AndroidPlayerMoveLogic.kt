@@ -3,13 +3,13 @@ package pl.klolo.spaceshooter.game.logic.player.move
 import com.badlogic.gdx.Gdx
 import pl.klolo.spaceshooter.game.engine.GameEngine
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PlayerChangePosition
 import kotlin.math.abs
 
 class AndroidPlayerMoveLogic(
-    private val eventProcessor: EventProcessor
-) : PlayerMoveLogic, BasePlayerMove(eventProcessor) {
+    private val eventBus: EventBus
+) : PlayerMoveLogic, BasePlayerMove(eventBus) {
 
     private val accelerationFactor = GameEngine.applicationConfiguration.getConfig("android")
         .getConfig("player")
@@ -21,13 +21,13 @@ class AndroidPlayerMoveLogic(
         y = 300.0f
     }
 
-    override val createSubscription: SpriteEntityWithLogic.() -> EventProcessor.Subscription =
-        { eventProcessor.subscribe(id) }
+    override val createSubscription: SpriteEntityWithLogic.() -> EventBus.Subscription =
+        { eventBus.subscribe(id) }
 
     override val onUpdate: SpriteEntityWithLogic.(Float) -> Unit = {
         move(Gdx.input.accelerometerX)
         super.checkBoundPosition(this)
-        eventProcessor.sendEvent(PlayerChangePosition(x + width / 2, y + height / 2))
+        eventBus.sendEvent(PlayerChangePosition(x + width / 2, y + height / 2))
     }
 
     private fun SpriteEntityWithLogic.move(accelerometerX: Float) {

@@ -3,24 +3,23 @@ package pl.klolo.spaceshooter.game.logic.enemy
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import pl.klolo.spaceshooter.game.engine.GameEngine
-import pl.klolo.spaceshooter.game.engine.ProfileHolder
-import pl.klolo.spaceshooter.game.event.EnemyDestroyed
-import pl.klolo.spaceshooter.game.event.EventProcessor
-import pl.klolo.spaceshooter.game.event.RegisterEntity
-import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
 import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
-import java.util.*
+import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EventBus
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import java.util.Random
+import kotlin.math.max
 
 const val speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy = 500f
 const val minimalShootDelay = 0.5f
 
 class EnemyGeneratorLogic(
-    private val profileHolder: ProfileHolder,
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
@@ -39,7 +38,7 @@ class EnemyGeneratorLogic(
                 .toFloat()
 
         Gdx.app.debug(this.javaClass.name, "createSubscription")
-        eventProcessor
+        eventBus
                 .subscribe(id)
                 .onEvent<EnemyDestroyed> {
                     Gdx.app.debug(this.javaClass.name, "Enemy destroyed. Total enemies: $totalCreatedEnemy Max enemies: $maxEnemiesOnStage, " +
@@ -56,7 +55,7 @@ class EnemyGeneratorLogic(
                                 totalCreatedEnemy++
                                 createEnemy(laserConfiguration)
 
-                                maxEnemiesOnStage = Math.max(Math.floorDiv(totalCreatedEnemy, 10), 3)
+                                maxEnemiesOnStage = max(Math.floorDiv(totalCreatedEnemy, 10), 3)
                             }
                         },
                         Actions.delay(1f)
@@ -81,7 +80,7 @@ class EnemyGeneratorLogic(
             speed = enemySpeed
         }
         enemyEntity.logic.apply { initialize.invoke(enemyEntity) }
-        eventProcessor.sendEvent(RegisterEntity(enemyEntity))
+        eventBus.sendEvent(RegisterEntity(enemyEntity))
     }
 
     override val onUpdate: EntityWithLogic.(Float) -> Unit = {

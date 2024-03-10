@@ -13,7 +13,7 @@ import pl.klolo.spaceshooter.game.common.addSequence
 import pl.klolo.spaceshooter.game.common.execute
 import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
 import pl.klolo.spaceshooter.game.entity.kind.TextEntity
-import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.OpenMainMenu
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.engine.FontSize
@@ -27,7 +27,7 @@ import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
 
 class GameLoaderLogic(
-    private val eventProcessor: EventProcessor,
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) :
     EntityLogicWithRendering<SpriteWithCustomRendering> {
@@ -76,7 +76,7 @@ class GameLoaderLogic(
                 delay(loaderDelay),
                 execute {
                     Gdx.app.debug(this.javaClass.name, "Loading time: ${System.currentTimeMillis() - loadingStart} ms")
-                    eventProcessor.sendEvent(OpenMainMenu)
+                    eventBus.sendEvent(OpenMainMenu)
                 }
         )
 
@@ -140,7 +140,7 @@ class GameLoaderLogic(
                     text = "Kotlin wars"
                     fontSize = FontSize.BIG
                     useLighting = false
-                    eventProcessor.sendEvent(RegisterEntity(this))
+                    eventBus.sendEvent(RegisterEntity(this))
                 }
                 .apply {
                     intializeFont()
