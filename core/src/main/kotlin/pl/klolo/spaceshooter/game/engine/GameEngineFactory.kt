@@ -1,11 +1,11 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.assets.AssetManager
-import pl.klolo.game.entity.EntityRegistry
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.physics.ContactListener
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.physics.ContactListener
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.physics.GamePhysics
 
 val gameDependencyInjectionContext = GameDependencyInjectionContext()
 val assetManager = AssetManager()

@@ -1,10 +1,14 @@
-package pl.klolo.game.entity
+package pl.klolo.spaceshooter.game.entity
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
-import pl.klolo.game.engine.assetManager
-import pl.klolo.game.engine.gameDependencyInjectionContext
-import pl.klolo.game.entity.kind.*
+import pl.klolo.spaceshooter.game.engine.assetManager
+import pl.klolo.spaceshooter.game.engine.gameDependencyInjectionContext
+import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.ParticleEntity
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
 
 private var entityCounter = 0
 

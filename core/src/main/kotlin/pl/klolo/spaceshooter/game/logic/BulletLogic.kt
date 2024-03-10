@@ -1,27 +1,33 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import box2dLight.PointLight
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
-import pl.klolo.game.common.Colors.blueLight
-import pl.klolo.game.event.*
-import pl.klolo.game.common.addSequence
-import pl.klolo.game.common.execute
-import pl.klolo.game.common.executeAfterDelay
-import pl.klolo.game.entity.*
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.common.Colors.blueLight
+import pl.klolo.spaceshooter.game.common.addSequence
+import pl.klolo.spaceshooter.game.common.execute
+import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.isEnemyByName
+import pl.klolo.spaceshooter.game.entity.isExtraBonus
+import pl.klolo.spaceshooter.game.entity.isPlayerByName
+import pl.klolo.spaceshooter.game.entity.isShieldByName
+import pl.klolo.spaceshooter.game.event.Collision
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.LaserHitInShield
 import java.util.*
 
 enum class Direction { DOWN, UP }
 
 class BulletLogic(
-        private val gamePhysics: GamePhysics,
-        private val eventProcessor: EventProcessor,
-        private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
+    private val gamePhysics: GamePhysics,
+    private val eventProcessor: EventProcessor,
+    private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
 
     lateinit var bulletLight: PointLight
     private lateinit var physicsShape: PolygonShape

@@ -1,13 +1,20 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.beust.klaxon.Klaxon
-import pl.klolo.game.entity.*
-import pl.klolo.game.event.*
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.GameOver
+import pl.klolo.spaceshooter.game.event.OpenMainMenu
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.event.StartNewGame
 
 class Stage(
     private val gameLighting: GameLighting,

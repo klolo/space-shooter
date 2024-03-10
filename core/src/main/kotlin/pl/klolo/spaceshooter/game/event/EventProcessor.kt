@@ -1,4 +1,4 @@
-package pl.klolo.game.event
+package pl.klolo.spaceshooter.game.event
 
 class EventProcessor {
     private val subscription = mutableMapOf<Event, MutableList<Pair<Int /*ID*/, (Event) -> Unit>>>()

@@ -1,4 +1,4 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
@@ -9,19 +9,28 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
-import pl.klolo.game.common.addSequence
-import pl.klolo.game.common.execute
-import pl.klolo.game.engine.*
-import pl.klolo.game.entity.*
-import pl.klolo.game.entity.kind.SpriteWithCustomRendering
-import pl.klolo.game.entity.kind.TextEntity
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.OpenMainMenu
-import pl.klolo.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.common.addSequence
+import pl.klolo.spaceshooter.game.common.execute
+import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.OpenMainMenu
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.engine.FontSize
+import pl.klolo.spaceshooter.game.engine.assetManager
+import pl.klolo.spaceshooter.game.engine.atlas
+import pl.klolo.spaceshooter.game.engine.musics
+import pl.klolo.spaceshooter.game.engine.sounds
+import pl.klolo.spaceshooter.game.engine.textures
+import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
 
 class GameLoaderLogic(
-        private val eventProcessor: EventProcessor,
-        private val entityRegistry: EntityRegistry) : EntityLogicWithRendering<SpriteWithCustomRendering> {
+    private val eventProcessor: EventProcessor,
+    private val entityRegistry: EntityRegistry
+) :
+    EntityLogicWithRendering<SpriteWithCustomRendering> {
 
     private val textConfiguration = entityRegistry.getConfigurationById("text")
     private lateinit var progressBar: Sprite

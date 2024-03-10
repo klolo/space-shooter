@@ -1,13 +1,13 @@
-package pl.klolo.game.physics
+package pl.klolo.spaceshooter.game.physics
 
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
-import pl.klolo.game.entity.Entity
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.Collision
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.Collision
 
 class ContactListener(private val eventProcessor: EventProcessor) : ContactListener {
     override fun preSolve(contact: Contact?, oldManifold: Manifold?) {

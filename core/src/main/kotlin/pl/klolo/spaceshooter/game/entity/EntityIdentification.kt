@@ -1,4 +1,4 @@
-package pl.klolo.game.entity
+package pl.klolo.spaceshooter.game.entity
 
 fun isPlayerByName(entity: Entity): Boolean {
     return entity.uniqueName.contains("player")

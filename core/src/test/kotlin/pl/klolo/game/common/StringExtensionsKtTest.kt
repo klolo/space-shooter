@@ -2,6 +2,7 @@ package pl.klolo.game.common
 
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
+import pl.klolo.spaceshooter.game.common.toColor
 
 
 internal class StringExtensionsKtTest : StringSpec({

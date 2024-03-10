@@ -8,7 +8,7 @@
   {
     "uniqueName": "loader",
     "type": "SPRITE_WITH_CUSTOM_RENDERING",
-    "logicClass": "pl.klolo.game.logic.GameLoaderLogic",
+    "logicClass": "pl.klolo.spaceshooter.game.logic.GameLoaderLogic",
     "initOnCreate": true
   }
 ]

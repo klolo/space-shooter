@@ -1,7 +1,7 @@
-package pl.klolo.game.common
+package pl.klolo.spaceshooter.game.common
 
 import com.badlogic.gdx.Gdx
-import pl.klolo.game.engine.Profile
+import pl.klolo.spaceshooter.game.engine.Profile
 
 fun getScreenWidth(profile: Profile): Float {
     return when (profile) {

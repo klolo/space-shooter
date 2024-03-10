@@ -1,26 +1,26 @@
-package pl.klolo.game.logic.helper
+package pl.klolo.spaceshooter.game.logic.helper
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha
-import pl.klolo.game.entity.EntityRegistry
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.entity.kind.TextEntity
-import pl.klolo.game.entity.createEntity
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.RegisterEntity
-import pl.klolo.game.common.addSequence
-import pl.klolo.game.common.execute
-import pl.klolo.game.common.Colors
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.common.addSequence
+import pl.klolo.spaceshooter.game.common.execute
+import pl.klolo.spaceshooter.game.common.Colors
 
 data class PopupMessageConfiguration(
-        val message: String,
-        val color: Color = Colors.white,
-        val callback: () -> Unit = {}
+    val message: String,
+    val color: Color = Colors.white,
+    val callback: () -> Unit = {}
 )
 
 class PopupMessages(
-        private val entityRegistry: EntityRegistry,
-        private val eventProcessor: EventProcessor
+    private val entityRegistry: EntityRegistry,
+    private val eventProcessor: EventProcessor
 ) {
 
     private var messageLabel: TextEntity? = null

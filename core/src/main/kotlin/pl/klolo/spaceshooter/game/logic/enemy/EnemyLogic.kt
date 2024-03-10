@@ -1,28 +1,41 @@
-package pl.klolo.game.logic.enemy
+package pl.klolo.spaceshooter.game.logic.enemy
 
 import box2dLight.PointLight
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
-import pl.klolo.game.common.*
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.entity.isPlayerLaser
-import pl.klolo.game.entity.*
-import pl.klolo.game.entity.kind.ParticleEntity
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.*
-import pl.klolo.game.logic.BulletLogic
-import pl.klolo.game.logic.Direction
-import pl.klolo.game.logic.helper.PopupMessageConfiguration
-import pl.klolo.game.logic.helper.PopupMessages
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.entity.isPlayerLaser
+import pl.klolo.spaceshooter.game.entity.kind.ParticleEntity
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.logic.BulletLogic
+import pl.klolo.spaceshooter.game.logic.Direction
+import pl.klolo.spaceshooter.game.logic.helper.PopupMessageConfiguration
+import pl.klolo.spaceshooter.game.logic.helper.PopupMessages
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.common.Colors
+import pl.klolo.spaceshooter.game.common.addForeverSequence
+import pl.klolo.spaceshooter.game.common.addSequence
+import pl.klolo.spaceshooter.game.common.execute
+import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.AddPoints
+import pl.klolo.spaceshooter.game.event.Collision
+import pl.klolo.spaceshooter.game.event.DisableDoublePoints
+import pl.klolo.spaceshooter.game.event.EnableDoublePoints
+import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.RegisterEntity
 
 
 class EnemyLogic(
-        private val entityRegistry: EntityRegistry,
-        private val gamePhysics: GamePhysics,
-        private val eventProcessor: EventProcessor,
-        private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
+    private val entityRegistry: EntityRegistry,
+    private val gamePhysics: GamePhysics,
+    private val eventProcessor: EventProcessor,
+    private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
 
     private val explosionConfiguration = entityRegistry.getConfigurationById("explosion")
     private var explosionLights = ExplosionEffect(gameLighting, 50f)

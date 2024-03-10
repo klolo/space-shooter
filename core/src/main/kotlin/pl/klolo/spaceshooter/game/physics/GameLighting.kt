@@ -4,8 +4,9 @@ import box2dLight.PointLight
 import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import pl.klolo.game.common.Colors
-import pl.klolo.game.engine.GameEngine
+import pl.klolo.spaceshooter.game.common.Colors
+import pl.klolo.spaceshooter.game.engine.GameEngine
+import pl.klolo.spaceshooter.game.physics.GamePhysics
 
 class GameLighting(private val gamePhysics: GamePhysics) {
     private lateinit var rayHandler: RayHandler

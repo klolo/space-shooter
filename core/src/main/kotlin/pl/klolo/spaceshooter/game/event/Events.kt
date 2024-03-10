@@ -1,7 +1,7 @@
-package pl.klolo.game.event
+package pl.klolo.spaceshooter.game.event
 
-import pl.klolo.game.engine.SoundEffect
-import pl.klolo.game.entity.Entity
+import pl.klolo.spaceshooter.game.engine.SoundEffect
+import pl.klolo.spaceshooter.game.entity.Entity
 
 sealed class Event()
 

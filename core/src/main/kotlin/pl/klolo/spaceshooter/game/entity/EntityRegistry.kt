@@ -1,4 +1,4 @@
-package pl.klolo.game.entity
+package pl.klolo.spaceshooter.game.entity
 
 class EntityRegistry {
     private var entitiesConfiguration: List<EntityConfiguration> = mutableListOf()

@@ -1,21 +1,29 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
-import pl.klolo.game.common.executeAfterDelay
-import pl.klolo.game.engine.Profile
-import pl.klolo.game.engine.FontSize
-import pl.klolo.game.engine.Highscore
-import pl.klolo.game.engine.ProfileHolder
-import pl.klolo.game.entity.*
-import pl.klolo.game.entity.kind.TextEntity
-import pl.klolo.game.event.*
+import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.engine.Profile
+import pl.klolo.spaceshooter.game.engine.FontSize
+import pl.klolo.spaceshooter.game.engine.Highscore
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PressedEnter
+import pl.klolo.spaceshooter.game.event.PressedEscape
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.event.StartNewGame
 
 class GameOverMenuLogic<T : Entity>(
-        private val profileHolder: ProfileHolder,
-        private val highscore: Highscore,
-        private val eventProcessor: EventProcessor,
-        private val entityRegistry: EntityRegistry) : EntityLogic<T>, Actor() {
+    private val profileHolder: ProfileHolder,
+    private val highscore: Highscore,
+    private val eventProcessor: EventProcessor,
+    private val entityRegistry: EntityRegistry
+) : EntityLogic<T>, Actor() {
 
     private val textConfiguration = entityRegistry.getConfigurationById("text")
     private lateinit var infoLabel: TextEntity

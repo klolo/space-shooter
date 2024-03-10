@@ -1,21 +1,19 @@
-package pl.klolo.game.logic.bonus
+package pl.klolo.spaceshooter.game.logic.bonus
 
-import com.badlogic.gdx.Gdx
-import pl.klolo.game.entity.EntityConfiguration
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.entity.EntityRegistry
-import pl.klolo.game.entity.createEntity
-import pl.klolo.game.entity.kind.EntityWithLogic
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.EnemyDestroyed
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.RegisterEntity
-import java.util.*
-
+import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.RegisterEntity
 
 class ExtraStarBonusGenerator(
-        private val eventProcessor: EventProcessor,
-        private val entityRegistry: EntityRegistry) : EntityLogic<EntityWithLogic> {
+    private val eventProcessor: EventProcessor,
+    private val entityRegistry: EntityRegistry
+) : EntityLogic<EntityWithLogic> {
 
     private lateinit var starConfiguration: EntityConfiguration
 

@@ -1,4 +1,4 @@
-package pl.klolo.game.common
+package pl.klolo.spaceshooter.game.common
 
 object Colors {
     val red = "#f22c21".toColor()

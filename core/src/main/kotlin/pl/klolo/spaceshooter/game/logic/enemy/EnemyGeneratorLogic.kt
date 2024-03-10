@@ -1,25 +1,27 @@
-package pl.klolo.game.logic.enemy
+package pl.klolo.spaceshooter.game.logic.enemy
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import pl.klolo.game.engine.GameEngine
-import pl.klolo.game.engine.ProfileHolder
-import pl.klolo.game.entity.*
-import pl.klolo.game.event.EnemyDestroyed
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.RegisterEntity
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.entity.kind.EntityWithLogic
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.engine.GameEngine
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
+import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import java.util.*
 
 const val speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy = 500f
 const val minimalShootDelay = 0.5f
 
 class EnemyGeneratorLogic(
-        private val profileHolder: ProfileHolder,
-        private val eventProcessor: EventProcessor,
-        private val entityRegistry: EntityRegistry
+    private val profileHolder: ProfileHolder,
+    private val eventProcessor: EventProcessor,
+    private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
     private var enemySpeed = 1f

@@ -1,4 +1,4 @@
-package pl.klolo.game.entity
+package pl.klolo.spaceshooter.game.entity
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch

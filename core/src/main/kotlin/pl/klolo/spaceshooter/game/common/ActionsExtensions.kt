@@ -1,4 +1,4 @@
-package pl.klolo.game.common
+package pl.klolo.spaceshooter.game.common
 
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor

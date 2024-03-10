@@ -1,4 +1,4 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
-import pl.klolo.game.engine.inputProcessor.KeyboardProcessor
-import pl.klolo.game.engine.inputProcessor.TouchProcessor
-import pl.klolo.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.engine.inputProcessor.KeyboardProcessor
+import pl.klolo.spaceshooter.game.engine.inputProcessor.TouchProcessor
+import pl.klolo.spaceshooter.game.event.EventProcessor
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.physics.GamePhysics
 
 class GameEngine internal constructor(
     private val profileHolder: ProfileHolder,

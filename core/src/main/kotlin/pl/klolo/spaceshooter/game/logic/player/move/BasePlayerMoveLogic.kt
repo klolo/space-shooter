@@ -1,13 +1,13 @@
-package pl.klolo.game.logic.player.move
+package pl.klolo.spaceshooter.game.logic.player.move
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
-import pl.klolo.game.engine.Profile
-import pl.klolo.game.engine.GameEngine.Companion.applicationConfiguration
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.common.execute
+import pl.klolo.spaceshooter.game.engine.Profile
+import pl.klolo.spaceshooter.game.engine.GameEngine.Companion.applicationConfiguration
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.common.execute
 
 
 enum class Direction { LEFT, RIGHT, NONE }
@@ -21,7 +21,8 @@ interface PlayerMoveLogic {
 fun getMoveLogicImplementation(profile: Profile, eventProcessor: EventProcessor): PlayerMoveLogic {
     return when (profile) {
         Profile.ANDROID -> AndroidPlayerMoveLogic(eventProcessor)
-        else -> DesktopPlayerMoveLogic(eventProcessor)
+        Profile.DESKTOP -> DesktopPlayerMoveLogic(eventProcessor)
+        else -> throw IllegalArgumentException("Profile not supported")
     }
 }
 
@@ -54,9 +55,9 @@ abstract class BasePlayerMove(private val eventProcessor: EventProcessor) {
         }
     }
 
-    protected fun SpriteEntityWithLogic.onMove(x: Float, playerSpeed: Float) {
+    protected fun SpriteEntityWithLogic.onMove(x: Float, moveDuration: Float) {
         removeAction(currentMove)
-        currentMove = moveTo(x, y, playerSpeed)
+        currentMove = moveTo(x, y, moveDuration)
         addAction(currentMove)
     }
 

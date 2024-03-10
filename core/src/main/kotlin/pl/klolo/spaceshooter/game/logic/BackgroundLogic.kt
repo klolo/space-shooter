@@ -1,17 +1,18 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import pl.klolo.game.engine.Profile
-import pl.klolo.game.engine.ProfileHolder
-import pl.klolo.game.engine.assetManager
-import pl.klolo.game.entity.kind.SpriteWithCustomRendering
-import pl.klolo.game.entity.EntityLogicWithRendering
+import pl.klolo.spaceshooter.game.engine.Profile
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
+import pl.klolo.spaceshooter.game.engine.assetManager
+import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
+import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
 
-class BackgroundLogic(private val profileHolder: ProfileHolder) : EntityLogicWithRendering<SpriteWithCustomRendering> {
+class BackgroundLogic(private val profileHolder: ProfileHolder) :
+    EntityLogicWithRendering<SpriteWithCustomRendering> {
     companion object {
         @JvmStatic
         private lateinit var firstBackground: Sprite

@@ -1,8 +1,12 @@
-package pl.klolo.game.engine.inputProcessor
+package pl.klolo.spaceshooter.game.engine.inputProcessor
 
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
-import pl.klolo.game.event.*
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PressedEnter
+import pl.klolo.spaceshooter.game.event.PressedLeftUp
+import pl.klolo.spaceshooter.game.event.PressedRightUp
+import pl.klolo.spaceshooter.game.event.PressedSpace
 
 
 class TouchProcessor(eventProcessor: EventProcessor) : GestureDetector(GestureListener(eventProcessor))

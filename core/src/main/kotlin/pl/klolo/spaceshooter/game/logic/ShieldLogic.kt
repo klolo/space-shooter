@@ -1,21 +1,26 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.CircleShape
-import pl.klolo.game.common.Colors.blueLight
+import pl.klolo.spaceshooter.game.common.Colors.blueLight
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.engine.SoundEffect
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.*
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.logic.enemy.ExplosionEffect
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.SoundEffect
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.logic.enemy.ExplosionEffect
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.event.DisableShield
+import pl.klolo.spaceshooter.game.event.EnableShield
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.LaserHitInShield
+import pl.klolo.spaceshooter.game.event.PlaySound
+import pl.klolo.spaceshooter.game.event.PlayerChangePosition
 
 class ShieldLogic(
-        private val gamePhysics: GamePhysics,
-        private val eventProcessor: EventProcessor,
-        private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
+    private val gamePhysics: GamePhysics,
+    private val eventProcessor: EventProcessor,
+    private val gameLighting: GameLighting) : EntityLogic<SpriteEntityWithLogic> {
 
     private var explosionLights = ExplosionEffect(gameLighting, 200f, blueLight)
     private lateinit var physicsShape: CircleShape

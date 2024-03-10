@@ -1,16 +1,25 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import box2dLight.Light
 import com.badlogic.gdx.Gdx
-import pl.klolo.game.common.Colors
-import pl.klolo.game.engine.Profile
-import pl.klolo.game.engine.*
-import pl.klolo.game.entity.*
-import pl.klolo.game.event.*
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.common.Colors
+import pl.klolo.spaceshooter.game.engine.Profile
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
 import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.FontSize
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
+import pl.klolo.spaceshooter.game.engine.Song
+import pl.klolo.spaceshooter.game.engine.SoundManager
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PressedEnter
+import pl.klolo.spaceshooter.game.event.PressedEscape
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.event.StartNewGame
 
 
 class PulsingLightAnimation(private val light: Light) {
@@ -26,11 +35,12 @@ class PulsingLightAnimation(private val light: Light) {
 }
 
 class MainMenuLogic<T : Entity>(
-        private val profileHolder: ProfileHolder,
-        private val gameLighting: GameLighting,
-        private val soundManager: SoundManager,
-        private val eventProcessor: EventProcessor,
-        private val entityRegistry: EntityRegistry) : EntityLogic<T> {
+    private val profileHolder: ProfileHolder,
+    private val gameLighting: GameLighting,
+    private val soundManager: SoundManager,
+    private val eventProcessor: EventProcessor,
+    private val entityRegistry: EntityRegistry
+) : EntityLogic<T> {
 
     private val textConfiguration = entityRegistry.getConfigurationById("text")
 

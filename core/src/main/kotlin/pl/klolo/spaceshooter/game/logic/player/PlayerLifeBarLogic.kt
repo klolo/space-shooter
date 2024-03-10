@@ -1,4 +1,4 @@
-package pl.klolo.game.logic.player
+package pl.klolo.spaceshooter.game.logic.player
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import pl.klolo.game.engine.assetManager
-import pl.klolo.game.entity.kind.SpriteWithCustomRendering
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.ChangePlayerLfeLevel
-import pl.klolo.game.entity.EntityLogicWithRendering
+import pl.klolo.spaceshooter.game.engine.assetManager
+import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.ChangePlayerLfeLevel
+import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
 
-class PlayerLifeBarLogic(private val eventProcessor: EventProcessor) : EntityLogicWithRendering<SpriteWithCustomRendering> {
+class PlayerLifeBarLogic(private val eventProcessor: EventProcessor) :
+    EntityLogicWithRendering<SpriteWithCustomRendering> {
     private lateinit var fill: Sprite
     private lateinit var background: Sprite
 

@@ -1,23 +1,28 @@
-package pl.klolo.game.logic.bonus
+package pl.klolo.spaceshooter.game.logic.bonus
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
-import pl.klolo.game.engine.GameEngine
-import pl.klolo.game.engine.assetManager
-import pl.klolo.game.entity.EntityLogicWithRendering
-import pl.klolo.game.entity.EntityRegistry
-import pl.klolo.game.entity.kind.SpriteWithCustomRendering
-import pl.klolo.game.event.*
-import pl.klolo.game.logic.player.bonusLifetime
+import pl.klolo.spaceshooter.game.engine.GameEngine
+import pl.klolo.spaceshooter.game.engine.assetManager
+import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.kind.SpriteWithCustomRendering
+import pl.klolo.spaceshooter.game.logic.player.bonusLifetime
+import pl.klolo.spaceshooter.game.event.EnableDoublePoints
+import pl.klolo.spaceshooter.game.event.EnableShield
+import pl.klolo.spaceshooter.game.event.EnableSuperBullet
+import pl.klolo.spaceshooter.game.event.EventProcessor
 
 private data class BonusBarItem(val sprite: Sprite, var enabled: Boolean = false, var since: Long = 0)
 
 class PlayerBonusBarLogic(
-        private val entityRegistry: EntityRegistry,
-        private val eventProcessor: EventProcessor) : EntityLogicWithRendering<SpriteWithCustomRendering> {
+    private val entityRegistry: EntityRegistry,
+    private val eventProcessor: EventProcessor
+) :
+    EntityLogicWithRendering<SpriteWithCustomRendering> {
 
     private val entityScaleFactor = GameEngine.applicationConfiguration.getConfig("engine").getDouble("entityScaleFactor").toFloat()
     private var posY = Gdx.graphics.height - entityRegistry.getConfigurationById("playerLifebar").height * 2

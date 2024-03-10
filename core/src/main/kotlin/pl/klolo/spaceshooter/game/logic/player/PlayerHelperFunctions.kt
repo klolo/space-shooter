@@ -1,6 +1,6 @@
-package pl.klolo.game.logic.player
+package pl.klolo.spaceshooter.game.logic.player
 
-import pl.klolo.game.engine.Profile
+import pl.klolo.spaceshooter.game.engine.Profile
 
 fun getPlayerBottomMargin(profile: Profile, playerHeight: Float): Float {
     return when (profile) {

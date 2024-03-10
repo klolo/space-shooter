@@ -1,17 +1,17 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
 import com.badlogic.gdx.Gdx
-import pl.klolo.game.entity.EntityRegistry
-import pl.klolo.game.entity.kind.EntityWithLogic
-import pl.klolo.game.entity.kind.TextEntity
-import pl.klolo.game.entity.createEntity
-import pl.klolo.game.event.AddPoints
-import pl.klolo.game.event.EnableDoublePoints
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.RegisterEntity
-import pl.klolo.game.common.executeAfterDelay
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.logic.player.bonusLifetime
+import pl.klolo.spaceshooter.game.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.entity.createEntity
+import pl.klolo.spaceshooter.game.event.AddPoints
+import pl.klolo.spaceshooter.game.event.EnableDoublePoints
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.logic.player.bonusLifetime
 
 class HUDLogic(
     private val eventProcessor: EventProcessor,

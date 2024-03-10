@@ -1,4 +1,4 @@
-package pl.klolo.game.entity
+package pl.klolo.spaceshooter.game.entity
 
 enum class EntityType {
     SPRITE_WITH_LOGIC,

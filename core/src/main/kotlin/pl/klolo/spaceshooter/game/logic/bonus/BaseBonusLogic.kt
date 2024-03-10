@@ -1,23 +1,23 @@
-package pl.klolo.game.logic.bonus
+package pl.klolo.spaceshooter.game.logic.bonus
 
 import box2dLight.PointLight
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
-import pl.klolo.game.common.Colors
-import pl.klolo.game.engine.*
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.Event
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.Collision
-import pl.klolo.game.common.addForeverSequence
-import pl.klolo.game.common.addSequence
-import pl.klolo.game.common.execute
-import pl.klolo.game.entity.EntityLogic
-import pl.klolo.game.entity.isPlayerByName
+import pl.klolo.spaceshooter.game.common.Colors
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.event.Event
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.Collision
+import pl.klolo.spaceshooter.game.common.addForeverSequence
+import pl.klolo.spaceshooter.game.common.addSequence
+import pl.klolo.spaceshooter.game.common.execute
+import pl.klolo.spaceshooter.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.isPlayerByName
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
 
 abstract class BaseBonusLogic(
     private val profileHolder: ProfileHolder,

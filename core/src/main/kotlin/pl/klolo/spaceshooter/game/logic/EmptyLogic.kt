@@ -1,7 +1,7 @@
-package pl.klolo.game.logic
+package pl.klolo.spaceshooter.game.logic
 
-import pl.klolo.game.entity.Entity
-import pl.klolo.game.entity.EntityLogic
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.EntityLogic
 
 class EmptyLogic<T : Entity> : EntityLogic<T> {
     override val initialize: T.() -> Unit = {

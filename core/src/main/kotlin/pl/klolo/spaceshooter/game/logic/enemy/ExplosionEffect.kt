@@ -1,11 +1,11 @@
-package pl.klolo.game.logic.enemy
+package pl.klolo.spaceshooter.game.logic.enemy
 
 import box2dLight.Light
 import com.badlogic.gdx.graphics.Color
-import pl.klolo.game.common.executeAfterDelay
-import pl.klolo.game.common.Colors.redLight
+import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.common.Colors.redLight
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import java.util.*
 
 const val explosionLightLifeTime = 0.15f

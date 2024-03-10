@@ -1,4 +1,4 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 class GameDependencyInjectionContext {
     private val beanRegistry: MutableMap<Class<*>, Any> = mutableMapOf()

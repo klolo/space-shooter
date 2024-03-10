@@ -1,16 +1,24 @@
-package pl.klolo.game.logic.bonus
+package pl.klolo.spaceshooter.game.logic.bonus
 
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.game.engine.ProfileHolder
-import pl.klolo.game.engine.SoundEffect
-import pl.klolo.game.event.*
-import pl.klolo.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.ProfileHolder
+import pl.klolo.spaceshooter.game.engine.SoundEffect
+import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.event.AddPlayerLife
+import pl.klolo.spaceshooter.game.event.AddPoints
+import pl.klolo.spaceshooter.game.event.EnableDoublePoints
+import pl.klolo.spaceshooter.game.event.EnableShield
+import pl.klolo.spaceshooter.game.event.EnableSuperBullet
+import pl.klolo.spaceshooter.game.event.Event
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PlaySound
 
 class AdditionalLifeBonusLogic(
-        profileHolder: ProfileHolder,
-        eventProcessor: EventProcessor,
-        gameLighting: GameLighting,
-        gamePhysics: GamePhysics) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+    profileHolder: ProfileHolder,
+    eventProcessor: EventProcessor,
+    gameLighting: GameLighting,
+    gamePhysics: GamePhysics
+) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return AddPlayerLife(20)
@@ -18,10 +26,11 @@ class AdditionalLifeBonusLogic(
 }
 
 class AdditionalPointsBonusLogic(
-        profileHolder: ProfileHolder,
-        val eventProcessor: EventProcessor,
-        gameLighting: GameLighting,
-        gamePhysics: GamePhysics) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+    profileHolder: ProfileHolder,
+    val eventProcessor: EventProcessor,
+    gameLighting: GameLighting,
+    gamePhysics: GamePhysics
+) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
 
     companion object {
         const val additionalPoints = 100
@@ -34,9 +43,10 @@ class AdditionalPointsBonusLogic(
 }
 
 class SuperBulletBonusLogic(
-        profileHolder: ProfileHolder,
-        eventProcessor: EventProcessor,
-        gameLighting: GameLighting, gamePhysics: GamePhysics) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+    profileHolder: ProfileHolder,
+    eventProcessor: EventProcessor,
+    gameLighting: GameLighting, gamePhysics: GamePhysics
+) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableSuperBullet
@@ -44,10 +54,11 @@ class SuperBulletBonusLogic(
 }
 
 class ShieldBonusLogic(
-        profileHolder: ProfileHolder,
-        eventProcessor: EventProcessor,
-        gameLighting: GameLighting,
-        gamePhysics: GamePhysics) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+    profileHolder: ProfileHolder,
+    eventProcessor: EventProcessor,
+    gameLighting: GameLighting,
+    gamePhysics: GamePhysics
+) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableShield
@@ -55,10 +66,11 @@ class ShieldBonusLogic(
 }
 
 class DoublePointsBonusLogic(
-        profileHolder: ProfileHolder,
-        eventProcessor: EventProcessor,
-        gameLighting: GameLighting,
-        gamePhysics: GamePhysics) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
+    profileHolder: ProfileHolder,
+    eventProcessor: EventProcessor,
+    gameLighting: GameLighting,
+    gamePhysics: GamePhysics
+) : BaseBonusLogic(profileHolder, eventProcessor, gameLighting, gamePhysics) {
 
     override fun getEventToSendOnCollisionWithPlayer(): Event {
         return EnableDoublePoints

@@ -1,9 +1,9 @@
-package pl.klolo.game.physics
+package pl.klolo.spaceshooter.game.physics
 
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
-import pl.klolo.game.engine.GameEngine
+import pl.klolo.spaceshooter.game.engine.GameEngine
 import kotlin.LazyThreadSafetyMode.NONE
 
 class GamePhysics(private val contactListener: ContactListener) {

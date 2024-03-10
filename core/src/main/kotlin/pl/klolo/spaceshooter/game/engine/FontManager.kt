@@ -1,10 +1,10 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import pl.klolo.game.common.Colors.white
-import pl.klolo.game.engine.GameEngine.Companion.applicationConfiguration
+import pl.klolo.spaceshooter.game.common.Colors.white
+import pl.klolo.spaceshooter.game.engine.GameEngine.Companion.applicationConfiguration
 
 private val fontConfiguration = applicationConfiguration.getConfig("font")
 enum class FontSize(val value: Int) {

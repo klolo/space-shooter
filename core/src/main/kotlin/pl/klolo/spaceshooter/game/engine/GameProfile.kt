@@ -1,4 +1,4 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 enum class Profile {
     DESKTOP,

@@ -1,16 +1,16 @@
-package pl.klolo.game.entity.kind
+package pl.klolo.spaceshooter.game.entity.kind
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import pl.klolo.game.entity.Entity
-import pl.klolo.game.entity.EntityConfiguration
-import pl.klolo.game.entity.EntityLogicWithRendering
+import pl.klolo.spaceshooter.game.entity.Entity
+import pl.klolo.spaceshooter.game.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.entity.EntityLogicWithRendering
 
 open class SpriteWithCustomRendering(
-        val entityConfiguration: EntityConfiguration,
-        val logic: EntityLogicWithRendering<SpriteWithCustomRendering>,
-        override var id: Int) : Entity, Actor() {
+    val entityConfiguration: EntityConfiguration,
+    val logic: EntityLogicWithRendering<SpriteWithCustomRendering>,
+    override var id: Int) : Entity, Actor() {
 
     override var useLighting: Boolean = true
     override val uniqueName = entityConfiguration.uniqueName

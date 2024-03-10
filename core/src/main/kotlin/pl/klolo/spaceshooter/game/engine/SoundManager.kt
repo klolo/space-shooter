@@ -1,11 +1,11 @@
-package pl.klolo.game.engine
+package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import pl.klolo.game.event.EventProcessor
-import pl.klolo.game.event.PlaySound
-import pl.klolo.game.event.StopMusic
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PlaySound
+import pl.klolo.spaceshooter.game.event.StopMusic
 
 enum class Song(val filename: String) {
     MENU("sound/bensound-littleplanet.mp3"),

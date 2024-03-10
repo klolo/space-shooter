@@ -1,13 +1,13 @@
 package pl.klolo.spaceshooter;
 
-import static pl.klolo.game.engine.GameEngineFactoryKt.createGameEngine;
+import static pl.klolo.spaceshooter.game.engine.GameEngineFactoryKt.createGameEngine;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.typesafe.config.Config;
 
-import pl.klolo.game.engine.GameEngine;
-import pl.klolo.game.engine.Profile;
+import pl.klolo.spaceshooter.game.engine.GameEngine;
+import pl.klolo.spaceshooter.game.engine.Profile;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {

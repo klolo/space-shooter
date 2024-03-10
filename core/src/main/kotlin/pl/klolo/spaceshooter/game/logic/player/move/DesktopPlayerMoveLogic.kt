@@ -1,8 +1,16 @@
-package pl.klolo.game.logic.player.move
+package pl.klolo.spaceshooter.game.logic.player.move
 
 import com.badlogic.gdx.Gdx
-import pl.klolo.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.game.event.*
+import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
+import pl.klolo.spaceshooter.game.event.EventProcessor
+import pl.klolo.spaceshooter.game.event.PlayerChangePosition
+import pl.klolo.spaceshooter.game.event.PressedLeftDown
+import pl.klolo.spaceshooter.game.event.PressedLeftUp
+import pl.klolo.spaceshooter.game.event.PressedRightDown
+import pl.klolo.spaceshooter.game.event.PressedRightUp
+import pl.klolo.spaceshooter.game.logic.player.move.BasePlayerMove
+import pl.klolo.spaceshooter.game.logic.player.move.Direction
+import pl.klolo.spaceshooter.game.logic.player.move.PlayerMoveLogic
 
 class DesktopPlayerMoveLogic(private val eventProcessor: EventProcessor) : PlayerMoveLogic, BasePlayerMove(eventProcessor) {
 
