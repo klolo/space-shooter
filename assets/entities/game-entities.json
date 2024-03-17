@@ -147,6 +147,15 @@
     "layer": -1
   },
   {
+    "uniqueName": "boss1",
+    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.BossLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "enemy/boss1.png",
+    "width": 250,
+    "height": 250,
+    "layer": -1
+  },
+  {
     "uniqueName": "medicineBonus",
     "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.AdditionalLifeBonusLogic",
     "type": "SPRITE_WITH_LOGIC",

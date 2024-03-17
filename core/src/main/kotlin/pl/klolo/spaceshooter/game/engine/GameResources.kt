@@ -7,6 +7,7 @@ val textures = arrayOf(
         "enemy/enemyRed3.png",
         "enemy/enemyRed4.png",
         "enemy/enemyRed5.png",
+        "enemy/boss1.png",
         "lifebar.png",
         "menu-overlay.png",
         "menu-overlay-portrait.png",

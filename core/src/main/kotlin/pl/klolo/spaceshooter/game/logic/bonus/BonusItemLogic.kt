@@ -103,8 +103,8 @@ class SilverStarBonusLogic(
             bonusMoveAction = null
         }
 
-        val magnetEnabled = true // magnetCounter.decrementAndGet() > 0
-        val followPlayer = magnetEnabled && y >= playerPosY + 50
+        val magnetEnabled = magnetCounter.decrementAndGet() > 0
+        val followPlayer = magnetEnabled && y < playerPosY + 50
 
         val newPosition =
             if (followPlayer) moveToPoint(x to y, playerPosX to playerPosY, bonusSpeedBasedOnMagnet)

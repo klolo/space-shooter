@@ -32,7 +32,8 @@ import pl.klolo.spaceshooter.game.event.EnemyOutOfScreen
 import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 
-class EnemyLogic(
+
+class BossLogic(
     private val entityRegistry: EntityRegistry,
     private val gamePhysics: GamePhysics,
     private val eventBus: EventBus,
@@ -50,22 +51,16 @@ class EnemyLogic(
     private lateinit var body: Body
     private var life: Int = 0
     private var doublePoints = false
-    private val lifeFactory = 20
+    private val lifeFactory = 1000
 
     private val lightDistance = 40f
     private val lightDistanceDistanceAfterExplosion = 500f
-    private val SpriteEntityWithLogic.isAboveScreen: Boolean
-        get() = y > getScreenHeight()
 
     override val onDispose: SpriteEntityWithLogic.() -> Unit = {
         if (display) {
             physicsShape.dispose()
             gamePhysics.destroy(body)
         }
-    }
-
-    fun setShootDelay() {
-
     }
 
     override val initialize: SpriteEntityWithLogic.() -> Unit = {
@@ -79,7 +74,7 @@ class EnemyLogic(
 
         createPhysics()
 
-        addSequence(
+        moveAction = addSequence(
             moveTo(x, -1 * height, speed),
             execute { onDestroyBecauseOutScreen() }
         )
@@ -97,7 +92,7 @@ class EnemyLogic(
     }
 
     private fun SpriteEntityWithLogic.onCollision(it: Collision) {
-        if (isAboveScreen) {
+        if (isAboveScreen(y)) {
             return
         }
 
@@ -114,7 +109,7 @@ class EnemyLogic(
     }
 
     private fun SpriteEntityWithLogic.shootOnPosition(laserConfiguration: EntityConfiguration) {
-        if (isAboveScreen) {
+        if (isAboveScreen(y)) {
             return
         }
 
@@ -179,6 +174,10 @@ class EnemyLogic(
         addAction(fadeOut(explosionLightFadeOutTime))
     }
 
+    fun updateExplosion(currentX: Float, currentY: Float) {
+        explosion?.apply { this.effect.setPosition(currentX, currentY) }
+    }
+
     override val onUpdate: SpriteEntityWithLogic.(Float) -> Unit = {
         light?.setPosition(x + width / 2, y + height / 2)
         body.setTransform(x + width / 2, y + height / 2, 0.0f)
@@ -188,7 +187,12 @@ class EnemyLogic(
             updateLightAfterDestroyedEnemy()
         }
 
-        updateExplosion()
+        if (y < getScreenHeight() / 2) {
+            y = getScreenHeight() / 2
+            removeAction(moveAction)
+        }
+
+        updateExplosion(x, y)
     }
 
     private fun SpriteEntityWithLogic.updateLightAfterDestroyedEnemy() {
@@ -198,12 +202,6 @@ class EnemyLogic(
             light?.isActive = false
             light = null
         }
-    }
-
-    private fun SpriteEntityWithLogic.updateExplosion() {
-        val currentX = x
-        val currentY = y
-        explosion?.apply { this.effect.setPosition(currentX, currentY) }
     }
 
     private fun SpriteEntityWithLogic.createPhysics() {

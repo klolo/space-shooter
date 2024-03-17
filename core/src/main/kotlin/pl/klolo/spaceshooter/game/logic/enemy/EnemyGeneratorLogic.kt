@@ -2,6 +2,7 @@ package pl.klolo.spaceshooter.game.logic.enemy
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.forever
 import pl.klolo.spaceshooter.game.engine.GameEngine
 import pl.klolo.spaceshooter.game.entity.EntityConfiguration
 import pl.klolo.spaceshooter.game.entity.EntityLogic
@@ -18,9 +19,10 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 
 const val speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy = 500f
-const val minimalShootDelay = 0.5f
+const val minimalShootDelay = 0.8f
 
-class EnemyGeneratorLogic(    private val eventBus: EventBus,
+class EnemyGeneratorLogic(
+    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
@@ -30,9 +32,14 @@ class EnemyGeneratorLogic(    private val eventBus: EventBus,
     private var totalCreatedEnemy = 0
     private val random = Random()
 
-    override val onDispose: EntityWithLogic.() -> Unit = {
-
-    }
+    private val enemies = listOf(
+//        "enemyRed1",
+//        "enemyRed2",
+//        "enemyRed3",
+      //  "enemyRed4" to false,
+        "enemyRed5" to false,
+        "boss1" to true
+    )
 
     override val initialize: EntityWithLogic.() -> Unit = {
         enemySpeed = GameEngine.applicationConfiguration.getConfig("engine")
@@ -52,25 +59,27 @@ class EnemyGeneratorLogic(    private val eventBus: EventBus,
             }
 
         addAction(
-            Actions.forever(
+            forever(
                 Actions.sequence(
                     Actions.run {
                         if (enemiesCount.get() < maxEnemiesOnStage) {
-                            val laserConfiguration = entityRegistry.getConfigurationById(
-                                "enemyRed" + (1 + random.nextInt(5))
-                            )
-                            enemiesCount.incrementAndGet()
-                            totalCreatedEnemy++
-                            createEnemy(laserConfiguration)
-
-                            maxEnemiesOnStage =
-                                max(Math.floorDiv(totalCreatedEnemy, 10), maxEnemiesOnStage)
+                            generateEnemy()
                         }
                     },
                     Actions.delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
                 )
             )
         )
+    }
+
+    private fun EntityWithLogic.generateEnemy() {
+        val (nextEnemy) = enemies[random.nextInt(enemies.size)]
+        val laserConfiguration = entityRegistry.getConfigurationById(nextEnemy)
+        createEnemy(laserConfiguration)
+
+        enemiesCount.incrementAndGet()
+        totalCreatedEnemy++
+        maxEnemiesOnStage = max(Math.floorDiv(totalCreatedEnemy, 10), maxEnemiesOnStage)
     }
 
     private fun EntityWithLogic.createEnemy(laserConfiguration: EntityConfiguration) {
@@ -85,15 +94,21 @@ class EnemyGeneratorLogic(    private val eventBus: EventBus,
             y = enemyYPosition
         } as SpriteEntityWithLogic
 
-        (enemyEntity.logic as EnemyLogic).apply {
-            shootDelay = 3f - Math.max(
-                minimalShootDelay,
-                totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy
-            )
-            speed = enemySpeed
-        }
-        enemyEntity.logic.apply { initialize.invoke(enemyEntity) }
+        val shootDelay = 3f - max(
+            minimalShootDelay,
+            totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy
+        );
+
+        val baseEnemyLogic = (enemyEntity.logic as BaseEnemyLogic)
+        baseEnemyLogic.shootDelay = shootDelay
+        baseEnemyLogic.speed = enemySpeed
+        baseEnemyLogic.initialize.invoke(enemyEntity)
+
         eventBus.sendEvent(RegisterEntity(enemyEntity))
+    }
+
+    override val onDispose: EntityWithLogic.() -> Unit = {
+
     }
 
     override val onUpdate: EntityWithLogic.(Float) -> Unit = {
