@@ -34,7 +34,7 @@ abstract class BasePlayerMove(private val eventBus: EventBus) {
 
     protected var currentMove: Action = execute {}
     protected var direction = Direction.NONE
-    protected val margin = 50f
+    protected val margin = 35f
 
     protected val checkBoundPosition: SpriteEntityWithLogic.() -> Unit = {
         val centerX = x + width / 2
@@ -44,10 +44,6 @@ abstract class BasePlayerMove(private val eventBus: EventBus) {
         if (stopMovingLeft || stopMovingRight) {
             removeAction(currentMove)
             direction = Direction.NONE
-        }
-
-        if (x < 0) {
-            x = 0f
         }
 
         if (x > Gdx.graphics.width.toFloat()) {

@@ -3,24 +3,24 @@ package pl.klolo.spaceshooter.game.engine.inputProcessor
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.PressedEnter
-import pl.klolo.spaceshooter.game.event.PressedLeftUp
-import pl.klolo.spaceshooter.game.event.PressedRightUp
-import pl.klolo.spaceshooter.game.event.PressedSpace
+import pl.klolo.spaceshooter.game.event.KeyEnterReleased
+import pl.klolo.spaceshooter.game.event.KeyArrowLeftReleased
+import pl.klolo.spaceshooter.game.event.KeyArrowRightReleased
+import pl.klolo.spaceshooter.game.event.KeySpaceReleased
 
 
 class TouchProcessor(eventBus: EventBus) : GestureDetector(GestureListener(eventBus))
 
 class GestureListener(private val eventBus: EventBus) : GestureDetector.GestureListener {
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean {
-        eventBus.sendEvent(PressedEnter)
+        eventBus.sendEvent(KeyEnterReleased)
         return true
     }
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
-        eventBus.sendEvent(PressedSpace)
-        eventBus.sendEvent(PressedRightUp)
-        eventBus.sendEvent(PressedLeftUp)
+        eventBus.sendEvent(KeySpaceReleased)
+        eventBus.sendEvent(KeyArrowRightReleased)
+        eventBus.sendEvent(KeyArrowLeftReleased)
         return true
     }
 

@@ -4,6 +4,7 @@ import box2dLight.PointLight
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.CircleShape
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
@@ -26,11 +27,13 @@ abstract class BaseBonusLogic(
     private val gamePhysics: GamePhysics
 ) : EntityLogic<SpriteEntityWithLogic> {
 
-    private lateinit var light: PointLight
-    private lateinit var physicsShape: CircleShape
-    private lateinit var body: Body
-    private var ignoreNextCollision = false
-    private val bonusSpeed = 20f
+    protected lateinit var light: PointLight
+    protected lateinit var physicsShape: CircleShape
+    protected lateinit var body: Body
+    protected var bonusMoveAction: Action? = null
+
+    protected var ignoreNextCollision = false
+    protected var bonusSpeed = 10f
 
     abstract fun getEventToSendOnCollisionWithPlayer(): Event;
 
@@ -43,7 +46,7 @@ abstract class BaseBonusLogic(
             scaleTo(1f, 1f, 1f, Interpolation.linear)
         )
 
-        addSequence(
+        bonusMoveAction = addSequence(
             moveTo(x, (-1 * height), bonusSpeed),
             execute { shouldBeRemove = true }
         )
@@ -53,17 +56,21 @@ abstract class BaseBonusLogic(
                 val collidedEntity = it.entity!!
 
                 if (isPlayerByName(collidedEntity) && !ignoreNextCollision) {
-                    ignoreNextCollision = true
-                    clearActions()
-                    addSequence(
-                        scaleTo(0.01f, 0.01f, 0.2f, Interpolation.linear),
-                        execute {
-                            eventBus.sendEvent(getEventToSendOnCollisionWithPlayer())
-                            shouldBeRemove = true
-                        }
-                    )
+                    onCollisionWithPlayer()
                 }
             }
+    }
+
+    open var onCollisionWithPlayer: SpriteEntityWithLogic.() -> Unit = {
+        ignoreNextCollision = true
+        clearActions()
+        addSequence(
+            scaleTo(0.01f, 0.01f, 0.2f, Interpolation.linear),
+            execute {
+                eventBus.sendEvent(getEventToSendOnCollisionWithPlayer())
+                shouldBeRemove = true
+            }
+        )
     }
 
     override val onUpdate: SpriteEntityWithLogic.(Float) -> Unit = {

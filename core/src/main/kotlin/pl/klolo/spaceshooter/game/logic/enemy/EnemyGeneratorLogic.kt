@@ -10,23 +10,25 @@ import pl.klolo.spaceshooter.game.entity.createEntity
 import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EnemyOutOfScreen
 import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import java.util.Random
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 
 const val speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy = 500f
 const val minimalShootDelay = 0.5f
 
-class EnemyGeneratorLogic(
-    private val eventBus: EventBus,
+class EnemyGeneratorLogic(    private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
 
     private var enemySpeed = 1f
     private var maxEnemiesOnStage = 3
-    private var enemiesCount = 0
+    private var enemiesCount = AtomicInteger(0)
     private var totalCreatedEnemy = 0
+    private val random = Random()
 
     override val onDispose: EntityWithLogic.() -> Unit = {
 
@@ -34,33 +36,41 @@ class EnemyGeneratorLogic(
 
     override val initialize: EntityWithLogic.() -> Unit = {
         enemySpeed = GameEngine.applicationConfiguration.getConfig("engine")
-                .getDouble("enemySpeed")
-                .toFloat()
+            .getDouble("enemySpeed")
+            .toFloat()
 
         Gdx.app.debug(this.javaClass.name, "createSubscription")
         eventBus
-                .subscribe(id)
-                .onEvent<EnemyDestroyed> {
-                    Gdx.app.debug(this.javaClass.name, "Enemy destroyed. Total enemies: $totalCreatedEnemy Max enemies: $maxEnemiesOnStage, " +
-                            "shoot delay: ${Math.max(minimalShootDelay, totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy)}")
-                    enemiesCount--
-                }
+            .subscribe(id)
+            .onEvent<EnemyDestroyed> {
+                printEnemiesStatistic()
+                enemiesCount.decrementAndGet()
+            }
+            .onEvent<EnemyOutOfScreen> {
+                printEnemiesStatistic()
+                enemiesCount.decrementAndGet()
+            }
 
-        addAction(Actions.forever(
+        addAction(
+            Actions.forever(
                 Actions.sequence(
-                        Actions.run {
-                            if (enemiesCount < maxEnemiesOnStage) {
-                                val laserConfiguration = entityRegistry.getConfigurationById("enemyRed" + (1 + Random().nextInt(5)))
-                                enemiesCount++
-                                totalCreatedEnemy++
-                                createEnemy(laserConfiguration)
+                    Actions.run {
+                        if (enemiesCount.get() < maxEnemiesOnStage) {
+                            val laserConfiguration = entityRegistry.getConfigurationById(
+                                "enemyRed" + (1 + random.nextInt(5))
+                            )
+                            enemiesCount.incrementAndGet()
+                            totalCreatedEnemy++
+                            createEnemy(laserConfiguration)
 
-                                maxEnemiesOnStage = max(Math.floorDiv(totalCreatedEnemy, 10), 3)
-                            }
-                        },
-                        Actions.delay(1f)
+                            maxEnemiesOnStage =
+                                max(Math.floorDiv(totalCreatedEnemy, 10), maxEnemiesOnStage)
+                        }
+                    },
+                    Actions.delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
                 )
-        ))
+            )
+        )
     }
 
     private fun EntityWithLogic.createEnemy(laserConfiguration: EntityConfiguration) {
@@ -76,7 +86,10 @@ class EnemyGeneratorLogic(
         } as SpriteEntityWithLogic
 
         (enemyEntity.logic as EnemyLogic).apply {
-            shootDelay = 3f - Math.max(minimalShootDelay, totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy)
+            shootDelay = 3f - Math.max(
+                minimalShootDelay,
+                totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy
+            )
             speed = enemySpeed
         }
         enemyEntity.logic.apply { initialize.invoke(enemyEntity) }
@@ -84,6 +97,16 @@ class EnemyGeneratorLogic(
     }
 
     override val onUpdate: EntityWithLogic.(Float) -> Unit = {
+    }
+
+    private fun printEnemiesStatistic() {
+        Gdx.app.debug(
+            this.javaClass.name,
+            "Enemy destroyed. Total enemies: $totalCreatedEnemy Max enemies: $maxEnemiesOnStage, " +
+                    "shoot delay: ${
+                        minimalShootDelay.coerceAtLeast(totalCreatedEnemy / speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy)
+                    }"
+        )
     }
 
 }

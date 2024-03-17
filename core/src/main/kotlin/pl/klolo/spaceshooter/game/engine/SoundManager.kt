@@ -18,7 +18,8 @@ enum class SoundEffect(val filename: String) {
     FOUND_BONUS("sound/bonus.wav"),
     YIPEE("sound/yipee.wav"),
     PLAYER_COLLISION("sound/playerCollision.wav"),
-    DESTROY_PLAYER("sound/destroy.wav")
+    DESTROY_PLAYER("sound/destroy.wav"),
+    PLAYER_HIT("sound/hit.mp3")
 }
 
 class SoundManager(private val eventBus: EventBus) {

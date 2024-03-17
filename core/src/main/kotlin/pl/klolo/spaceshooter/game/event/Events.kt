@@ -6,19 +6,19 @@ import pl.klolo.spaceshooter.game.entity.Entity
 sealed class Event()
 
 // keyboard
-object PressedLeftUp : Event()
+object KeyArrowLeftReleased : Event()
 
-object PressedRightUp : Event()
-object PressedLeftDown : Event()
-object PressedRightDown : Event()
-object PressedSpace : Event()
-object PressedArrowDown : Event()
-object PressedArrowUp : Event()
-object PressedEnter : Event()
-object PressedEscape : Event()
+object KeyArrowRightReleased : Event()
+object KeyArrowLeftPressed : Event()
+object KeyArrowRightPressed : Event()
+object KeySpaceReleased : Event()
+object KeyEnterReleased : Event()
+object EscapePressed : Event()
 
 // player
 class EnemyDestroyed(val x: Float = 0f, val y: Float = 0f) : Event()
+
+class EnemyOutOfScreen() : Event()
 
 class PlayerChangePosition(val x: Float = 0f, val y: Float = 0f) : Event()
 class ChangePlayerLfeLevel(val actualPlayerLifeLevel: Int = 100) : Event()
@@ -32,6 +32,11 @@ object EnableShield : Event()
 object DisableShield : Event()
 
 object EnableDoublePoints : Event()
+
+object EnableMagnetPoints : Event()
+
+object DisableMagnetPoints : Event()
+
 object DisableDoublePoints : Event()
 
 class LaserHitInShield(val x: Float = 0f, val y: Float = 0f) : Event()

@@ -21,7 +21,8 @@ fun isPlayerLaser(entity: Entity): Boolean {
 }
 
 fun isExtraPointsBonus(entity: Entity): Boolean {
-    return entity.uniqueName == "starBonus"
+    return entity.uniqueName == "silverStarBonus"
+            || entity.uniqueName == "goldStarBonus"
 }
 
 fun isExtraBonus(entity: Entity): Boolean {

@@ -13,8 +13,8 @@ import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.entity.createEntity
 import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.PressedEnter
-import pl.klolo.spaceshooter.game.event.PressedEscape
+import pl.klolo.spaceshooter.game.event.KeyEnterReleased
+import pl.klolo.spaceshooter.game.event.EscapePressed
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.event.StartNewGame
 
@@ -37,8 +37,8 @@ class GameOverMenuLogic<T : Entity>(
         executeAfterDelay(activateNavigationTime) {
             eventBus
                     .subscribe(id)
-                    .onEvent<PressedEnter> { eventBus.sendEvent(StartNewGame) }
-                    .onEvent<PressedEscape> { Gdx.app.exit() }
+                    .onEvent<KeyEnterReleased> { eventBus.sendEvent(StartNewGame) }
+                    .onEvent<EscapePressed> { Gdx.app.exit() }
         }
 
         infoLabel = createInfoLabel()

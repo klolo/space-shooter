@@ -19,7 +19,9 @@ val textures = arrayOf(
         "power-ups/pill_red.png",
         "power-ups/powerupBlue_bolt.png",
         "power-ups/powerupBlue_shield.png",
+        "power-ups/powerupYellow_star.png",
         "power-ups/star_gold.png",
+        "power-ups/star_silver.png",
         "background.jpg",
         "background-portrait.jpg",
         "lifebar-background.png",
@@ -43,7 +45,8 @@ val sounds = arrayOf(
         "sound/bonus.wav",
         "sound/yipee.wav",
         "sound/playerCollision.wav",
-        "sound/destroy.wav"
+        "sound/destroy.wav",
+        "sound/hit.mp3"
 )
 
 val musics = arrayOf(

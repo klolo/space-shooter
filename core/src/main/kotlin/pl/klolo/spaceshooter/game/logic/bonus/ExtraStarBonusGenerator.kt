@@ -18,7 +18,7 @@ class ExtraStarBonusGenerator(
     private lateinit var starConfiguration: EntityConfiguration
 
     override val initialize: EntityWithLogic.() -> Unit = {
-        starConfiguration = entityRegistry.getConfigurationById("starBonus")
+        starConfiguration = entityRegistry.getConfigurationById("silverStarBonus")
 
         eventBus
                 .subscribe(id)

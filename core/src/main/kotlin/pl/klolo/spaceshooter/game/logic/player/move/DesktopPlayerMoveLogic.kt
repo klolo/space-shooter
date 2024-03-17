@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.PlayerChangePosition
-import pl.klolo.spaceshooter.game.event.PressedLeftDown
-import pl.klolo.spaceshooter.game.event.PressedLeftUp
-import pl.klolo.spaceshooter.game.event.PressedRightDown
-import pl.klolo.spaceshooter.game.event.PressedRightUp
+import pl.klolo.spaceshooter.game.event.KeyArrowLeftPressed
+import pl.klolo.spaceshooter.game.event.KeyArrowLeftReleased
+import pl.klolo.spaceshooter.game.event.KeyArrowRightPressed
+import pl.klolo.spaceshooter.game.event.KeyArrowRightReleased
 
 class DesktopPlayerMoveLogic(private val eventBus: EventBus) : PlayerMoveLogic, BasePlayerMove(eventBus) {
 
@@ -22,25 +22,29 @@ class DesktopPlayerMoveLogic(private val eventBus: EventBus) : PlayerMoveLogic, 
     override val createSubscription: SpriteEntityWithLogic.() -> EventBus.Subscription = {
         eventBus
                 .subscribe(id)
-                .onEvent<PressedLeftDown> {
+                .onEvent<KeyArrowLeftPressed> {
                     if (x - width > 0) {
                         direction = Direction.LEFT
                         onMove(x - Gdx.graphics.width.toFloat(), playerSpeed)
                     }
                 }
-                .onEvent<PressedRightDown> {
+                .onEvent<KeyArrowRightPressed> {
                     if (x + width < Gdx.graphics.width.toFloat()) {
                         direction = Direction.RIGHT
                         onMove(x + Gdx.graphics.width.toFloat(), playerSpeed)
                     }
                 }
-                .onEvent<PressedRightUp> {
-                    direction = Direction.NONE
-                    removeAction(currentMove)
+                .onEvent<KeyArrowRightReleased> {
+                    if(direction == Direction.RIGHT) {
+                        direction = Direction.NONE
+                        removeAction(currentMove)
+                    }
                 }
-                .onEvent<PressedLeftUp> {
-                    direction = Direction.NONE
-                    removeAction(currentMove)
+                .onEvent<KeyArrowLeftReleased> {
+                    if(direction == Direction.LEFT) {
+                        direction = Direction.NONE
+                        removeAction(currentMove)
+                    }
                 }
     }
 }

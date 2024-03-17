@@ -156,8 +156,17 @@
     "layer": -1
   },
   {
-    "uniqueName": "starBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.AdditionalPointsBonusLogic",
+    "uniqueName": "silverStarBonus",
+    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.SilverStarBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/star_silver.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "goldStarBonus",
+    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.GoldStarBonusLogic",
     "type": "SPRITE_WITH_LOGIC",
     "file": "power-ups/star_gold.png",
     "width": 20,
@@ -197,6 +206,15 @@
     "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.DoublePointsBonusLogic",
     "type": "SPRITE_WITH_LOGIC",
     "file": "power-ups/powerupBlue_star.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "magnetPointsBonus",
+    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.MagnetPointsBonusLogic",
+    "type": "SPRITE_WITH_LOGIC",
+    "file": "power-ups/powerupYellow_star.png",
     "width": 20,
     "height": 20,
     "layer": -1

@@ -33,33 +33,37 @@ class BonusGeneratorLogic(
     private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry
 ) : EntityLogic<EntityWithLogic> {
+
     private val random = Random()
 
-    private val items by lazy(LazyThreadSafetyMode.NONE) {
+    private val items by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         listOf(
-                entityRegistry.getConfigurationById("medicineBonus") to 10,
-                entityRegistry.getConfigurationById("starBonus") to 2,
-                entityRegistry.getConfigurationById("superBulletBonus") to 20,
-                entityRegistry.getConfigurationById("shieldBonus") to 20,
-                entityRegistry.getConfigurationById("doublePointsBonus") to 20
+            entityRegistry.getConfigurationById("medicineBonus") to 40,
+            entityRegistry.getConfigurationById("goldStarBonus") to 40,
+            entityRegistry.getConfigurationById("superBulletBonus") to 40,
+            entityRegistry.getConfigurationById("shieldBonus") to 40,
+            entityRegistry.getConfigurationById("doublePointsBonus") to 40,
+            entityRegistry.getConfigurationById("magnetPointsBonus") to 40
         )
     }
 
     override val initialize: EntityWithLogic.() -> Unit = {
-        Gdx.app.debug(this.javaClass.name, "createSubscription")
+        Gdx.app.debug(this.javaClass.name, "BonusGeneratorLogic initialize")
 
-        addAction(forever(
+        addAction(
+            forever(
                 sequence(
-                        Actions.run {
-                            val randomItem = getRandomItemConfiguration()
-                            if (shouldCreateItem(randomItem.second)) {
-                                val enemyEntity = createItem(randomItem.first)
-                                eventBus.sendEvent(RegisterEntity(enemyEntity))
-                            }
-                        },
-                        delay(1f)
+                    Actions.run {
+                        val randomItem = getRandomItemConfiguration()
+                        if (shouldCreateItem(randomItem.second)) {
+                            val enemyEntity = createItem(randomItem.first)
+                            eventBus.sendEvent(RegisterEntity(enemyEntity))
+                        }
+                    },
+                    delay(1f)
                 )
-        ))
+            )
+        )
     }
 
     override val onDispose: EntityWithLogic.() -> Unit = {

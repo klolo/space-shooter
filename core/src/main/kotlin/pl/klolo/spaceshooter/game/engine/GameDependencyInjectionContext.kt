@@ -26,6 +26,6 @@ class GameDependencyInjectionContext {
                     .first()
         }
 
-        return beanRegistry[classRef] ?: throw IllegalStateException("component not found: $classRef")
+        return beanRegistry[classRef] ?: throw IllegalStateException("cannot find dependency by type: $classRef")
     }
 }

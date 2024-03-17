@@ -18,6 +18,7 @@ import pl.klolo.spaceshooter.game.common.addForeverSequence
 import pl.klolo.spaceshooter.game.common.addSequence
 import pl.klolo.spaceshooter.game.common.execute
 import pl.klolo.spaceshooter.game.common.executeAfterDelay
+import pl.klolo.spaceshooter.game.common.getScreenHeight
 import pl.klolo.spaceshooter.game.entity.EntityConfiguration
 import pl.klolo.spaceshooter.game.entity.EntityLogic
 import pl.klolo.spaceshooter.game.entity.EntityRegistry
@@ -27,6 +28,7 @@ import pl.klolo.spaceshooter.game.event.Collision
 import pl.klolo.spaceshooter.game.event.DisableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnableDoublePoints
 import pl.klolo.spaceshooter.game.event.EnemyDestroyed
+import pl.klolo.spaceshooter.game.event.EnemyOutOfScreen
 import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 
@@ -55,6 +57,8 @@ class EnemyLogic(
     var speed = 1f
     private val lightDistance = 40f
     private val lightDistanceDistanceAfterExplosion = 500f
+    private val SpriteEntityWithLogic.isAboveScreen: Boolean
+        get() = y > getScreenHeight()
 
     override val onDispose: SpriteEntityWithLogic.() -> Unit = {
         if (display) {
@@ -62,6 +66,7 @@ class EnemyLogic(
             gamePhysics.destroy(body)
         }
     }
+
 
     override val initialize: SpriteEntityWithLogic.() -> Unit = {
         val laserConfiguration = entityRegistry.getConfigurationById("laserRed01")
@@ -76,7 +81,7 @@ class EnemyLogic(
 
         addSequence(
             moveTo(x, -1 * height, speed),
-            execute { onDestroy() }
+            execute { onDestroyBecauseOutScreen() }
         )
 
         addForeverSequence(
@@ -92,6 +97,10 @@ class EnemyLogic(
     }
 
     private fun SpriteEntityWithLogic.onCollision(it: Collision) {
+        if (isAboveScreen) {
+            return
+        }
+
         val collidedEntity = it.entity!! as SpriteEntityWithLogic
         if (isPlayerLaser(collidedEntity) && display) {
             life -= (collidedEntity.logic as BulletLogic).bulletPower
@@ -105,9 +114,12 @@ class EnemyLogic(
     }
 
     private fun SpriteEntityWithLogic.shootOnPosition(laserConfiguration: EntityConfiguration) {
+        if (isAboveScreen) {
+            return
+        }
+
         val bulletXPosition = x + width / 2 // width of the enemy
-        val offset = 20
-        val bulletYPosition = y - height - offset
+        val bulletYPosition = y - height / 2
 
         val bulletEntity: SpriteEntityWithLogic = createEntity(laserConfiguration, false) {
             x = bulletXPosition - width / 2 // width of the bullet
@@ -136,11 +148,19 @@ class EnemyLogic(
         eventBus.sendEvent(AddPoints(height.toInt()))
     }
 
+    private fun SpriteEntityWithLogic.onDestroyBecauseOutScreen() {
+        clearActions()
+        display = false
+        shouldBeRemove = true
+        eventBus.sendEvent(EnemyOutOfScreen())
+    }
+
     private fun SpriteEntityWithLogic.showPopup() {
         val popupMessageConfiguration = PopupMessageConfiguration(
             message = "+${if (doublePoints) height.toInt() * 2 else height.toInt()}",
             callback = {
-                onDestroy()
+                shouldBeRemove = true
+                light?.remove()
             }
         )
         popupMessages.show(this, popupMessageConfiguration)
@@ -159,15 +179,6 @@ class EnemyLogic(
         addAction(fadeOut(explosionLightFadeOutTime))
     }
 
-    private fun SpriteEntityWithLogic.onDestroy() {
-        if (shouldBeRemove) {
-            return
-        }
-
-        shouldBeRemove = true
-        light?.remove()
-    }
-
     override val onUpdate: SpriteEntityWithLogic.(Float) -> Unit = {
         light?.setPosition(x + width / 2, y + height / 2)
         body.setTransform(x + width / 2, y + height / 2, 0.0f)
@@ -178,11 +189,6 @@ class EnemyLogic(
         }
 
         updateExplosion()
-
-        val downMarginBeforeDestroyEntity = 20
-        if (x + downMarginBeforeDestroyEntity < 0) {
-            shouldBeRemove = true
-        }
     }
 
     private fun SpriteEntityWithLogic.updateLightAfterDestroyedEnemy() {

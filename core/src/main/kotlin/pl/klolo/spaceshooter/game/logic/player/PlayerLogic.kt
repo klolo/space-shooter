@@ -11,7 +11,6 @@ import pl.klolo.spaceshooter.game.common.Colors.blueLight
 import pl.klolo.spaceshooter.game.entity.kind.ParticleEntity
 import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
 import pl.klolo.spaceshooter.game.logic.BulletLogic
-import pl.klolo.spaceshooter.game.logic.bonus.AdditionalPointsBonusLogic.Companion.additionalPoints
 import pl.klolo.spaceshooter.game.logic.enemy.ExplosionEffect
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessageConfiguration
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessages
@@ -40,9 +39,10 @@ import pl.klolo.spaceshooter.game.event.EnableSuperBullet
 import pl.klolo.spaceshooter.game.event.EventBus
 import pl.klolo.spaceshooter.game.event.GameOver
 import pl.klolo.spaceshooter.game.event.PlaySound
-import pl.klolo.spaceshooter.game.event.PressedSpace
+import pl.klolo.spaceshooter.game.event.KeySpaceReleased
 import pl.klolo.spaceshooter.game.event.RegisterEntity
 import pl.klolo.spaceshooter.game.event.StopMusic
+import pl.klolo.spaceshooter.game.logic.bonus.BonusWithAdditionalPoints
 
 const val bonusLifetime = 20f
 
@@ -96,7 +96,7 @@ class PlayerLogic(
             .onEvent<Collision> {
                 onCollision(it)
             }
-            .onEvent<PressedSpace> {
+            .onEvent<KeySpaceReleased> {
                 shootOnPosition()
             }
             .onEvent<AddPoints> {
@@ -195,6 +195,7 @@ class PlayerLogic(
             eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_COLLISION))
 
             lifeLevel -= 10
+            eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_HIT))
             popupMessages.show(this, PopupMessageConfiguration("-10%", Colors.orange))
 
             Gdx.input.vibrate(150)
@@ -214,7 +215,9 @@ class PlayerLogic(
         }
 
         if (isExtraPointsBonus(collidedEntity)) {
-            popupMessages.show(this, PopupMessageConfiguration("+$additionalPoints"))
+            val bonusEntityWithLogic = ((collidedEntity as SpriteEntityWithLogic).logic)
+            val starBonus =  bonusEntityWithLogic as BonusWithAdditionalPoints
+            popupMessages.show(this, PopupMessageConfiguration("+${starBonus.additionalPoints}"))
         }
     }
 
