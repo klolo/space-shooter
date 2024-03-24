@@ -1,13 +1,14 @@
 package pl.klolo.spaceshooter.game.engine
 
 import com.badlogic.gdx.assets.AssetManager
-import pl.klolo.spaceshooter.game.entity.EntityRegistry
-import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.physics.ContactListener
+import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.engine.physics.ContactListener
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
+import pl.klolo.spaceshooter.game.logic.Highscore
 
-val gameDependencyInjectionContext = GameDependencyInjectionContext()
+val dependencyInjectionContext = DependencyInjectionContext()
 val assetManager = AssetManager()
 
 var GAME_PROFILE = Profile.DESKTOP
@@ -16,7 +17,7 @@ class ProfileHolder(val activeProfile: Profile)
 
 fun createGameEngine(profile: Profile): GameEngine {
     GAME_PROFILE = profile
-    gameDependencyInjectionContext
+    dependencyInjectionContext
             .apply {
                 registerBean(EntityRegistry::class.java)
                 registerBean(ProfileHolder(profile))
@@ -30,5 +31,5 @@ fun createGameEngine(profile: Profile): GameEngine {
                 registerBean(GameEngine::class.java)
             }
 
-    return gameDependencyInjectionContext.getBeanByClass(GameEngine::class.java) as GameEngine
+    return dependencyInjectionContext.getBeanByClass(GameEngine::class.java) as GameEngine
 }

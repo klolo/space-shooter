@@ -5,16 +5,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.beust.klaxon.Klaxon
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.spaceshooter.game.physics.GamePhysics
-import pl.klolo.spaceshooter.game.entity.Entity
-import pl.klolo.spaceshooter.game.entity.EntityConfiguration
-import pl.klolo.spaceshooter.game.entity.EntityRegistry
-import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.GameOver
-import pl.klolo.spaceshooter.game.event.OpenMainMenu
-import pl.klolo.spaceshooter.game.event.RegisterEntity
-import pl.klolo.spaceshooter.game.event.StartNewGame
+import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.entity.ActorEntity
+import pl.klolo.spaceshooter.game.engine.entity.Entity
+import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.engine.entity.createEntity
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.GameOver
+import pl.klolo.spaceshooter.game.logic.OpenMainMenu
+import pl.klolo.spaceshooter.game.logic.RegisterEntity
+import pl.klolo.spaceshooter.game.logic.StartNewGame
 
 class Stage(
     private val gameLighting: GameLighting,
@@ -73,7 +74,7 @@ class Stage(
         gamePhysics.onDispose()
 
         Gdx.app.debug(this.javaClass.name, "clearing entities")
-        entities.forEach { it.dispose() }
+        entities.forEach { it.onDispose() }
         entities = emptyList()
 
         gameLighting.clearLights()
@@ -93,7 +94,7 @@ class Stage(
         entityRegistry.addConfiguration(entitiesConfiguration)
         val loadedEntities = entitiesConfiguration
             .filter { it.initOnCreate }
-            .map { createEntity<Entity>(it) }
+            .map { createEntity<ActorEntity>(it) }
 
         entities += loadedEntities
         entities = entities.sortedBy { it.layer }
@@ -109,8 +110,7 @@ class Stage(
     ): EntityConfiguration {
         return EntityConfiguration(
             uniqueName = entityConfiguration.uniqueName,
-            type = entityConfiguration.type,
-            logicClass = entityConfiguration.logicClass,
+            javaClass = entityConfiguration.javaClass,
             file = entityConfiguration.file,
             x = entityConfiguration.x,
             y = entityConfiguration.y,
@@ -127,27 +127,27 @@ class Stage(
             .filter { it.shouldBeRemove }
             .forEach {
                 Gdx.app.debug(this.javaClass.name, "dispose entity: ${it.uniqueName}")
-                it.dispose()
+                it.onDispose()
             }
 
         entities = entities.filter { !it.shouldBeRemove }
-        entities.forEach { it.update(delta) }
+        entities.forEach { it.onUpdate(delta) }
     }
 
     fun dispose() {
-        entities.forEach(Entity::dispose)
+        entities.forEach(Entity::onDispose)
     }
 
     fun drawWithLight(batch: Batch, camera: OrthographicCamera) {
         entities
             .filter { it.useLighting }
-            .forEach { it.draw(batch, camera) }
+            .forEach { it.onDraw(batch, camera) }
     }
 
     fun drawWithoutLight(batch: Batch, camera: OrthographicCamera) {
         entities
             .filter { !it.useLighting }
-            .forEach { it.draw(batch, camera) }
+            .forEach { it.onDraw(batch, camera) }
     }
 
 }

@@ -19,9 +19,9 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '1.0'
+    version = '0.1'
     ext {
-        appName = "space-shooter"
+        appName = "Galaxy wars"
         gdxVersion = '1.12.1'
         roboVMVersion = '2.3.20'
         box2DLightsVersion = '1.5'

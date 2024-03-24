@@ -2,14 +2,14 @@ package pl.klolo.spaceshooter.game.engine.inputProcessor
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
-import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.KeyEnterReleased
-import pl.klolo.spaceshooter.game.event.EscapePressed
-import pl.klolo.spaceshooter.game.event.KeyArrowLeftPressed
-import pl.klolo.spaceshooter.game.event.KeyArrowLeftReleased
-import pl.klolo.spaceshooter.game.event.KeyArrowRightPressed
-import pl.klolo.spaceshooter.game.event.KeyArrowRightReleased
-import pl.klolo.spaceshooter.game.event.KeySpaceReleased
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.KeyEnterReleased
+import pl.klolo.spaceshooter.game.logic.EscapePressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowLeftPressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowLeftReleased
+import pl.klolo.spaceshooter.game.logic.KeyArrowRightPressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowRightReleased
+import pl.klolo.spaceshooter.game.logic.KeySpaceReleased
 
 /**
  * TODO: Przeniesc do desktop. Klasa zalezna od platformy gdzie jest uruchamiana gra.

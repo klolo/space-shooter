@@ -9,9 +9,9 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import pl.klolo.spaceshooter.game.engine.inputProcessor.KeyboardProcessor
 import pl.klolo.spaceshooter.game.engine.inputProcessor.TouchProcessor
-import pl.klolo.spaceshooter.game.event.EventBus
+import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.game.physics.GameLighting
-import pl.klolo.spaceshooter.game.physics.GamePhysics
+import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 
 class GameEngine internal constructor(
     private val profileHolder: ProfileHolder,

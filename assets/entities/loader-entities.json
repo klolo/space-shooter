@@ -1,14 +1,13 @@
 [
   {
-    "uniqueName": "text",
-    "type": "TEXT_ENTITY",
+    "uniqueName": "loaderBanner",
+    "javaClass": "pl.klolo.spaceshooter.game.engine.entity.kind.TextEntity",
     "initOnCreate": false,
-    "layer": 10
+    "layer": 5
   },
   {
     "uniqueName": "loader",
-    "type": "SPRITE_WITH_CUSTOM_RENDERING",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.GameLoaderLogic",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.GameLoader",
     "initOnCreate": true
   }
 ]

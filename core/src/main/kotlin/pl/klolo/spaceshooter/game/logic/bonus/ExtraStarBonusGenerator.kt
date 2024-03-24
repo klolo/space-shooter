@@ -1,46 +1,39 @@
 package pl.klolo.spaceshooter.game.logic.bonus
 
-import pl.klolo.spaceshooter.game.entity.EntityConfiguration
-import pl.klolo.spaceshooter.game.entity.EntityLogic
-import pl.klolo.spaceshooter.game.entity.EntityRegistry
-import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.entity.kind.EntityWithLogic
-import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.spaceshooter.game.event.EnemyDestroyed
-import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.engine.entity.ActorEntity
+import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
+import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.engine.entity.createEntity
+import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
+import pl.klolo.spaceshooter.game.logic.EnemyDestroyed
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.RegisterEntity
 
 class ExtraStarBonusGenerator(
     private val eventBus: EventBus,
-    private val entityRegistry: EntityRegistry
-) : EntityLogic<EntityWithLogic> {
+    private val entityRegistry: EntityRegistry,
+    entityConfiguration: EntityConfiguration
+) : ActorEntity(entityConfiguration) {
 
     private lateinit var starConfiguration: EntityConfiguration
 
-    override val initialize: EntityWithLogic.() -> Unit = {
+    override fun onInitialize() {
         starConfiguration = entityRegistry.getConfigurationById("silverStarBonus")
 
         eventBus
-                .subscribe(id)
-                .onEvent<EnemyDestroyed> {
-                    val entity: SpriteEntityWithLogic = createEntityOnPosition(it.x, it.y)
-                    entity.logic.apply { initialize.invoke(entity) }
-                    eventBus.sendEvent(RegisterEntity(entity))
-                }
+            .subscribe(id)
+            .onEvent<EnemyDestroyed> {
+                val entity: SpriteEntity = createEntityOnPosition(it.x, it.y)
+                entity.onInitialize()
+                eventBus.sendEvent(RegisterEntity(entity))
+            }
     }
 
-    private fun createEntityOnPosition(enemyXPosition: Float, enemyYPosition: Float): SpriteEntityWithLogic {
-        return createEntity(starConfiguration, false) {
+    private fun createEntityOnPosition(enemyXPosition: Float, enemyYPosition: Float): SpriteEntity {
+        return createEntity<SpriteEntity>(starConfiguration).apply {
             x = enemyXPosition
             y = enemyYPosition
-        } as SpriteEntityWithLogic
+        }
     }
 
-    override val onUpdate: EntityWithLogic.(Float) -> Unit = {
-
-    }
-
-    override val onDispose: EntityWithLogic.() -> Unit = {
-
-    }
 }

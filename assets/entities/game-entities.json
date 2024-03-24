@@ -1,8 +1,7 @@
 [
   {
     "uniqueName": "player",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.player.PlayerLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.player.Player",
     "file": "ship.png",
     "x": 250.0,
     "y": 50.0,
@@ -13,8 +12,7 @@
   },
   {
     "uniqueName": "playerLifebar",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.player.PlayerLifeBarLogic",
-    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.player.PlayerLifeBar",
     "file": "lifebar-background.png",
     "width": 120,
     "height": 20,
@@ -22,9 +20,8 @@
     "initOnCreate": true
   },
   {
-    "uniqueName": "playerBonusBarLogic",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.PlayerBonusBarLogic",
-    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "uniqueName": "playerBonusBar",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.PlayerBonusBar",
     "file": "lifebar-background.png",
     "width": 100,
     "height": 20,
@@ -33,16 +30,14 @@
   },
   {
     "uniqueName": "background",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.BackgroundLogic",
-    "type": "SPRITE_WITH_CUSTOM_RENDERING",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.Background",
     "file": "background.jpg",
     "layer": 1,
     "initOnCreate": true
   },
   {
     "uniqueName": "laserBlue01",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.BulletLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.Bullet",
     "file": "laser/laserBlue01.png",
     "x": 10.0,
     "y": 10.0,
@@ -52,8 +47,7 @@
   },
   {
     "uniqueName": "laserBlue02",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.BulletLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.Bullet",
     "file": "laser/laserBlue06.png",
     "x": 10.0,
     "y": 10.0,
@@ -63,8 +57,7 @@
   },
   {
     "uniqueName": "laserRed01",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.BulletLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.Bullet",
     "file": "laser/laserRed01.png",
     "x": 10.0,
     "y": 10.0,
@@ -74,37 +67,32 @@
   },
   {
     "uniqueName": "enemyBase",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyGeneratorLogic",
-    "type": "ENTITY_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyGenerator",
     "initOnCreate": true
   },
   {
     "uniqueName": "extraStarBonusGenerator",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.ExtraStarBonusGenerator",
-    "type": "ENTITY_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.ExtraStarBonusGenerator",
     "initOnCreate": true
   },
   {
     "uniqueName": "text",
-    "type": "TEXT_ENTITY",
+    "javaClass": "pl.klolo.spaceshooter.game.engine.entity.kind.TextEntity",
     "layer": 10
   },
   {
     "uniqueName": "hud",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.HUDLogic",
-    "type": "ENTITY_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.HUD",
     "initOnCreate": true
   },
   {
     "uniqueName": "bonusManager",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.BonusGeneratorLogic",
-    "type": "ENTITY_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.BonusGenerator",
     "initOnCreate": true
   },
   {
     "uniqueName": "enemyRed1",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.Enemy",
     "file": "enemy/enemyRed1.png",
     "width": 30,
     "height": 30,
@@ -112,8 +100,7 @@
   },
   {
     "uniqueName": "enemyRed2",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.Enemy",
     "file": "enemy/enemyRed2.png",
     "width": 40,
     "height": 40,
@@ -121,8 +108,7 @@
   },
   {
     "uniqueName": "enemyRed3",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.Enemy",
     "file": "enemy/enemyRed3.png",
     "width": 50,
     "height": 50,
@@ -130,8 +116,7 @@
   },
   {
     "uniqueName": "enemyRed4",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.Enemy",
     "file": "enemy/enemyRed4.png",
     "width": 60,
     "height": 60,
@@ -139,8 +124,7 @@
   },
   {
     "uniqueName": "enemyRed5",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.Enemy",
     "file": "enemy/enemyRed5.png",
     "width": 60,
     "height": 60,
@@ -148,8 +132,7 @@
   },
   {
     "uniqueName": "boss1",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.enemy.BossLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.BossEnemy",
     "file": "enemy/boss1.png",
     "width": 250,
     "height": 250,
@@ -157,8 +140,7 @@
   },
   {
     "uniqueName": "medicineBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.AdditionalLifeBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.AdditionalLifeBonus",
     "file": "power-ups/pill_red.png",
     "width": 20,
     "height": 20,
@@ -166,8 +148,7 @@
   },
   {
     "uniqueName": "silverStarBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.SilverStarBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.SilverStarBonus",
     "file": "power-ups/star_silver.png",
     "width": 20,
     "height": 20,
@@ -175,8 +156,7 @@
   },
   {
     "uniqueName": "goldStarBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.GoldStarBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.GoldStarBonus",
     "file": "power-ups/star_gold.png",
     "width": 20,
     "height": 20,
@@ -184,8 +164,7 @@
   },
   {
     "uniqueName": "superBulletBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.SuperBulletBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.SuperBulletBonus",
     "file": "power-ups/powerupBlue_bolt.png",
     "width": 20,
     "height": 20,
@@ -193,8 +172,7 @@
   },
   {
     "uniqueName": "shieldBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.ShieldBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.ShieldBonus",
     "file": "power-ups/powerupBlue_shield.png",
     "width": 20,
     "height": 20,
@@ -202,8 +180,7 @@
   },
   {
     "uniqueName": "shield1",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.ShieldLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.Shield",
     "file": "shield1.png",
     "width": 110,
     "height": 120,
@@ -212,8 +189,7 @@
   },
   {
     "uniqueName": "doublePointsBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.DoublePointsBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.DoublePointsBonus",
     "file": "power-ups/powerupBlue_star.png",
     "width": 20,
     "height": 20,
@@ -221,8 +197,7 @@
   },
   {
     "uniqueName": "magnetPointsBonus",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.bonus.MagnetPointsBonusLogic",
-    "type": "SPRITE_WITH_LOGIC",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.MagnetPointsBonus",
     "file": "power-ups/powerupYellow_star.png",
     "width": 20,
     "height": 20,
@@ -230,16 +205,14 @@
   },
   {
     "uniqueName": "explosion",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.ParticleEntity",
+    "javaClass": "pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity",
     "file": "explosion.p",
-    "type": "PARTICLE_ENTITY",
     "layer": 2
   },
   {
     "uniqueName": "engineFire",
-    "logicClass": "pl.klolo.spaceshooter.game.logic.ParticleEntity",
+    "javaClass": "pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity",
     "file": "fire.p",
-    "type": "PARTICLE_ENTITY",
     "layer": 2
   }
 ]

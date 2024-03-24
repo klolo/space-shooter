@@ -2,12 +2,12 @@ package pl.klolo.spaceshooter.game.logic.helper
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha
-import pl.klolo.spaceshooter.game.entity.EntityRegistry
-import pl.klolo.spaceshooter.game.entity.kind.SpriteEntityWithLogic
-import pl.klolo.spaceshooter.game.entity.kind.TextEntity
-import pl.klolo.spaceshooter.game.entity.createEntity
-import pl.klolo.spaceshooter.game.event.EventBus
-import pl.klolo.spaceshooter.game.event.RegisterEntity
+import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
+import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
+import pl.klolo.spaceshooter.game.engine.entity.kind.TextEntity
+import pl.klolo.spaceshooter.game.engine.entity.createEntity
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.RegisterEntity
 import pl.klolo.spaceshooter.game.common.addSequence
 import pl.klolo.spaceshooter.game.common.execute
 import pl.klolo.spaceshooter.game.common.Colors
@@ -26,7 +26,7 @@ class PopupMessages(
     private var messageLabel: TextEntity? = null
     private val textEntityConfiguration = entityRegistry.getConfigurationById("text")
 
-    var show: SpriteEntityWithLogic.(popupMessageConfiguration: PopupMessageConfiguration) -> Unit = { popupMessageConfiguration ->
+    var show: SpriteEntity.(popupMessageConfiguration: PopupMessageConfiguration) -> Unit = { popupMessageConfiguration ->
         if (messageLabel != null) {
             (messageLabel as TextEntity).shouldBeRemove = true
         }
@@ -35,7 +35,6 @@ class PopupMessages(
                 .apply {
                     text = popupMessageConfiguration.message
                     eventBus.sendEvent(RegisterEntity(this))
-                    intializeFont()
                     labelColor = popupMessageConfiguration.color
                 }
                 .apply {
@@ -50,10 +49,12 @@ class PopupMessages(
                             })
                 }
 
-        messageLabel!!.setPosition(x + messageLabel!!.width / 2, y + height)
+        messageLabel!!.x = x + messageLabel!!.width / 2
+        messageLabel!!.y = y + height
     }
 
     fun updatePosition(posX: Float, posY: Float) {
-        messageLabel?.setPosition(posX - (messageLabel!!.getFontWidth() / 2), posY)
+        messageLabel?.x = posX - (messageLabel!!.getFontWidth() / 2)
+        messageLabel?.y = posY
     }
 }
