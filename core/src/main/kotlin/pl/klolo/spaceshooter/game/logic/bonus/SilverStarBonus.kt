@@ -51,7 +51,7 @@ class SilverStarBonus(
         synchronized(this) {
             if (subscription == null) {
                 subscription = eventBus
-                    .subscribe(this.hashCode())
+                    .subscribe(id)
                     .onEvent<PlayerChangePosition> {
                         playerPosX = it.x
                         playerPosY = it.y
@@ -98,6 +98,8 @@ class SilverStarBonus(
         if (y < -100) {
             shouldBeRemove = true
         }
+
+        super.onUpdate(delta)
     }
 
 }

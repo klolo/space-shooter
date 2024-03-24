@@ -82,6 +82,7 @@ abstract class AbstractBonus(
     override fun onUpdate(delta: Float) {
         light.setPosition(x + width / 2, y + height / 2)
         body.setTransform(x + width / 2, y + height / 2, 0.0f)
+        super.onUpdate(delta)
     }
 
     override fun onDispose() {
@@ -91,7 +92,7 @@ abstract class AbstractBonus(
         clearActions()
     }
 
-    private fun SpriteEntity.createPhysics() {
+    private fun createPhysics() {
         body = gamePhysics.createDynamicBody()
         physicsShape = CircleShape().apply { radius = width / 2 }
         val fixture = body.createFixture(gamePhysics.getStandardFixtureDef(physicsShape))

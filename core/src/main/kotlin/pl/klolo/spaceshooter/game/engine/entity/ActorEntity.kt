@@ -3,6 +3,7 @@ package pl.klolo.spaceshooter.game.engine.entity
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import java.util.UUID
 
 open class ActorEntity(entityConfiguration: EntityConfiguration) : Actor(), Entity {
 
@@ -10,7 +11,7 @@ open class ActorEntity(entityConfiguration: EntityConfiguration) : Actor(), Enti
 
     override val layer = entityConfiguration.layer
 
-    override val id = entityConfiguration.id
+    override val id = UUID.randomUUID().toString()
 
     override var shouldBeRemove = false
 

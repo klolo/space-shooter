@@ -11,6 +11,8 @@ import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.engine.entity.createEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.BossCreated
+import pl.klolo.spaceshooter.game.logic.BossDestroyed
 import pl.klolo.spaceshooter.game.logic.RegisterEntity
 import java.util.Random
 
@@ -22,6 +24,8 @@ class BonusGenerator(
 ) : ActorEntity(entityConfiguration) {
 
     private val random = Random()
+
+    private var bossActive = false
 
     private val items by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         listOf(
@@ -41,6 +45,10 @@ class BonusGenerator(
             forever(
                 sequence(
                     Actions.run {
+                        if (bossActive) {
+                            return@run
+                        }
+
                         val randomItem = getRandomItemConfiguration()
                         if (shouldCreateItem(randomItem.second)) {
                             val enemyEntity = createItem(randomItem.first)
@@ -69,7 +77,7 @@ class BonusGenerator(
         val enemyYPosition = Gdx.graphics.height.toFloat() + margin
 
         val enemyEntity = createEntity<SpriteEntity>(bonusItemConfiguration)
-        enemyEntity.apply{
+        enemyEntity.apply {
             x = enemyXPosition.toFloat() + width
             y = enemyYPosition
         }

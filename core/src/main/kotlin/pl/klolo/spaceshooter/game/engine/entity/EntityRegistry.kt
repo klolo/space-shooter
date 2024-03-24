@@ -10,12 +10,7 @@ class EntityRegistry {
 
     fun getConfigurationById(id: String): EntityConfiguration {
         return entitiesConfiguration
-            .findLast {
-                it.uniqueName == id
-            }
-            ?.apply {
-                this.id = ++entityCounter
-            }
+            .findLast { it.uniqueName == id }
             ?: throw IllegalArgumentException("Entity configuration by id not found $id")
     }
 }

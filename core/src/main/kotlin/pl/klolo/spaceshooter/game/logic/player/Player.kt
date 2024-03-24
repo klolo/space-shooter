@@ -5,12 +5,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.PolygonShape
-import com.badlogic.gdx.scenes.scene2d.Action
 import pl.klolo.game.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.Colors.blueLight
 import pl.klolo.spaceshooter.game.common.executeAfterDelay
-import pl.klolo.spaceshooter.game.logic.Highscore
 import pl.klolo.spaceshooter.game.engine.Profile
 import pl.klolo.spaceshooter.game.engine.ProfileHolder
 import pl.klolo.spaceshooter.game.engine.SoundEffect
@@ -21,30 +19,31 @@ import pl.klolo.spaceshooter.game.engine.entity.isEnemyLaser
 import pl.klolo.spaceshooter.game.engine.entity.isExtraPointsBonus
 import pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 import pl.klolo.spaceshooter.game.logic.AddPlayerLife
 import pl.klolo.spaceshooter.game.logic.AddPoints
+import pl.klolo.spaceshooter.game.logic.Bullet
 import pl.klolo.spaceshooter.game.logic.ChangePlayerLfeLevel
 import pl.klolo.spaceshooter.game.logic.Collision
 import pl.klolo.spaceshooter.game.logic.DisableDoublePoints
-import pl.klolo.spaceshooter.game.logic.DisableShield
 import pl.klolo.spaceshooter.game.logic.DisableSuperBullet
 import pl.klolo.spaceshooter.game.logic.EnableDoublePoints
-import pl.klolo.spaceshooter.game.logic.EnableShield
 import pl.klolo.spaceshooter.game.logic.EnableSuperBullet
-import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.GameOver
+import pl.klolo.spaceshooter.game.logic.Highscore
 import pl.klolo.spaceshooter.game.logic.KeySpaceReleased
 import pl.klolo.spaceshooter.game.logic.PlaySound
 import pl.klolo.spaceshooter.game.logic.RegisterEntity
 import pl.klolo.spaceshooter.game.logic.StopMusic
-import pl.klolo.spaceshooter.game.logic.Bullet
 import pl.klolo.spaceshooter.game.logic.bonus.BonusWithAdditionalPoints
 import pl.klolo.spaceshooter.game.logic.enemy.ExplosionEffect
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessageConfiguration
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessages
 import pl.klolo.spaceshooter.game.logic.player.move.AbstractPlayerMoveStrategy
 import pl.klolo.spaceshooter.game.logic.player.move.createMoveStrategy
-import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
+import pl.klolo.spaceshooter.game.logic.player.shield.PlayerShieldStrategy
+import java.util.UUID
 
 const val bonusLifetime = 20f
 
@@ -62,10 +61,8 @@ class Player(
     private var explosionLights = ExplosionEffect(gameLighting, 100f)
     private val popupMessages = PopupMessages(entityRegistry, eventBus)
     private lateinit var moveStrategy: AbstractPlayerMoveStrategy
+    private lateinit var shieldStrategy: PlayerShieldStrategy
     private lateinit var engineFire: ParticleEntity
-
-    private var hasShield = false
-
     private var lifeLevel = 100
     private var points = 0
     private val defaultBulletPower = 10
@@ -78,7 +75,6 @@ class Player(
     private lateinit var body: Body
     private lateinit var playerLight: PointLight
     private lateinit var laserConfiguration: EntityConfiguration
-    private var disableShieldAction: Action? = null
 
     override fun onDispose() {
         physicsShape.dispose()
@@ -96,18 +92,20 @@ class Player(
         createPhysics()
         createEngineFire()
 
-        moveStrategy = createMoveStrategy(profileHolder.activeProfile, this)
+        moveStrategy = createMoveStrategy(profileHolder.activeProfile, this, eventBus)
         moveStrategy.initialize()
         moveStrategy.subscribeEvents(eventBus)
+
+        shieldStrategy = PlayerShieldStrategy(eventBus, this)
+        shieldStrategy.subscribeEvents()
 
         eventBus.subscribe(id)
             .onEvent<Collision> { onCollision(it) }
             .onEvent<KeySpaceReleased> { shootOnPosition() }
             .onEvent<AddPoints> { addPoints(it) }
+            .onEvent<EnableDoublePoints> { onEnableDoublePoints() }
             .onEvent<AddPlayerLife> { onAddPlayerLife(it) }
             .onEvent<EnableSuperBullet> { onEnableSuperBullet() }
-            .onEvent<EnableShield> { onEnableShield() }
-            .onEvent<EnableDoublePoints> { onEnableDoublePoints() }
     }
 
     private fun onEnableDoublePoints() {
@@ -119,20 +117,6 @@ class Player(
             doublePoints = false
             popupMessages.show(this, PopupMessageConfiguration("x1"))
             eventBus.sendEvent(DisableDoublePoints)
-        }
-    }
-
-    private fun onEnableShield() {
-        eventBus.sendEvent(PlaySound(SoundEffect.FOUND_BONUS))
-        hasShield = true
-
-        if (disableShieldAction != null) {
-            removeAction(disableShieldAction)
-        }
-
-        disableShieldAction = executeAfterDelay(bonusLifetime) {
-            hasShield = false
-            eventBus.sendEvent(DisableShield)
         }
     }
 
@@ -195,7 +179,7 @@ class Player(
 
     private fun onCollision(it: Collision) {
         val collidedEntity = it.entity!!
-        if (isEnemyLaser(collidedEntity) && !hasShield && !isImmortal) {
+        if (isEnemyLaser(collidedEntity) && !shieldStrategy.hasShield && !isImmortal) {
             eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_COLLISION))
 
             lifeLevel -= 10

@@ -3,13 +3,13 @@ package pl.klolo.spaceshooter.game.engine.event
 import pl.klolo.spaceshooter.game.logic.Event
 
 class EventBus {
-    private val subscription = mutableMapOf<Event, MutableList<Pair<Int /*ID*/, (Event) -> Unit>>>()
+    private val subscription = mutableMapOf<Event, MutableList<Pair<String /*ID*/, (Event) -> Unit>>>()
 
-    fun subscribe(id: Int): Subscription {
+    fun subscribe(id: String): Subscription {
         return Subscription(id, this)
     }
 
-    class Subscription(val id: Int, val eventBus: EventBus) {
+    class Subscription(val id: String, val eventBus: EventBus) {
 
         fun onEvent(event: Event, eventConsumer: (Event) -> Unit): Subscription {
             eventBus.onEvent(event, id, eventConsumer)
@@ -26,7 +26,7 @@ class EventBus {
         }
     }
 
-    fun onEvent(event: Event, id: Int, eventProcessor: (Event) -> Unit) {
+    fun onEvent(event: Event, id: String, eventProcessor: (Event) -> Unit) {
         subscription.computeIfAbsent(event) {
             mutableListOf()
         }
@@ -46,7 +46,7 @@ class EventBus {
                 .forEach { it.second(event) }
     }
 
-    fun sendEvent(event: Event, destinationId: Int) {
+    fun sendEvent(event: Event, destinationId: String) {
         subscription
                 .filter { it.key.javaClass == event.javaClass }
                 .flatMap { it.value }

@@ -11,9 +11,6 @@ import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 
 abstract class AbstractEnemy(
-    private val entityRegistry: EntityRegistry,
-    private val gamePhysics: GamePhysics,
-    private val eventBus: EventBus,
     private val gameLighting: GameLighting,
     entityConfiguration: EntityConfiguration,
     sprite: Sprite

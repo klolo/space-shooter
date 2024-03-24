@@ -14,6 +14,9 @@ import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.logic.EnemyDestroyed
 import pl.klolo.spaceshooter.game.logic.EnemyOutOfScreen
 import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.AddPoints
+import pl.klolo.spaceshooter.game.logic.BossCreated
+import pl.klolo.spaceshooter.game.logic.BossDestroyed
 import pl.klolo.spaceshooter.game.logic.RegisterEntity
 import java.util.Random
 import java.util.concurrent.atomic.AtomicInteger
@@ -33,15 +36,20 @@ class EnemyGenerator(
     private var enemiesCount = AtomicInteger(0)
     private var totalCreatedEnemy = 0
     private val random = Random()
+    private var bossActive = false
+
+    private var bossCount = 0
+    private var pointsToNextBoss = 0
 
     private val enemies = listOf(
-//        "enemyRed1",
-//        "enemyRed2",
-//        "enemyRed3",
-        //  "enemyRed4" to false,
-        "enemyRed5" to false,
-        "boss1" to true
+        "enemyRed1",
+        "enemyRed2",
+        "enemyRed3",
+        "enemyRed4",
+        "enemyRed5",
     )
+
+    private var nextEnemy = enemies[random.nextInt(enemies.size)]
 
     override fun onInitialize() {
         enemySpeed = GameEngine.applicationConfiguration.getConfig("engine")
@@ -49,38 +57,57 @@ class EnemyGenerator(
             .toFloat()
 
         Gdx.app.debug(this.javaClass.name, "createSubscription")
+
+        var generationAction = generationSequence()
+        addAction(generationAction)
+
         eventBus
             .subscribe(id)
             .onEvent<EnemyDestroyed> {
                 printEnemiesStatistic()
                 enemiesCount.decrementAndGet()
             }
+            .onEvent<BossDestroyed> {
+                bossCount -= 1
+                if (bossCount <= 0) {
+                    addAction(generationAction)
+                    bossActive = false
+                }
+            }
             .onEvent<EnemyOutOfScreen> {
                 printEnemiesStatistic()
                 enemiesCount.decrementAndGet()
             }
+            .onEvent<AddPoints> {
+                pointsToNextBoss += it.points
 
-        addAction(
-            forever(
-                runSequence(
-                    execute { generateEnemy() },
-                    delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
-                )
-            )
-        )
+                if (pointsToNextBoss >= 1000 && !bossActive) {
+                    nextEnemy = "boss1"
+                    bossActive = true
+                    pointsToNextBoss = 0
+                }
+            }
     }
 
+    private fun generationSequence() = forever(
+        runSequence(
+            execute {
+                if (enemiesCount.get() < maxEnemiesOnStage) {
+                    generateEnemy()
+                }
+            },
+            delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
+        )
+    )
+
     private fun generateEnemy() {
-        if (enemiesCount.get() > maxEnemiesOnStage) {
-            return
-        }
-        val (nextEnemy) = enemies[random.nextInt(enemies.size)]
         val laserConfiguration = entityRegistry.getConfigurationById(nextEnemy)
         createEnemy(laserConfiguration)
 
         enemiesCount.incrementAndGet()
         totalCreatedEnemy++
         maxEnemiesOnStage = max(Math.floorDiv(totalCreatedEnemy, 10), maxEnemiesOnStage)
+        nextEnemy = enemies[random.nextInt(enemies.size)]
     }
 
     private fun createEnemy(laserConfiguration: EntityConfiguration) {

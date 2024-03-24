@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.PlaySound
 import pl.klolo.spaceshooter.game.logic.StopMusic
+import java.util.UUID
 
 enum class Song(val filename: String) {
     MENU("sound/bensound-littleplanet.mp3"),
@@ -44,7 +45,7 @@ class SoundManager(private val eventBus: EventBus) {
         }
 
         eventBus
-                .subscribe(-2)
+                .subscribe("SoundManager")
                 .onEvent<PlaySound> {
                     sounds[it.soundEffect]?.play(musicVolume)
                 }

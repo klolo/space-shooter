@@ -10,8 +10,9 @@ import pl.klolo.spaceshooter.game.logic.KeyArrowRightReleased
 import pl.klolo.spaceshooter.game.logic.player.Player
 
 class DesktopPlayerMoveStrategy(
-    private val player: Player
-) : AbstractPlayerMoveStrategy(player) {
+    private val player: Player,
+    eventBus: EventBus
+) : AbstractPlayerMoveStrategy(player, eventBus) {
 
     override fun initialize() {
         player.x = Gdx.graphics.width.toFloat() / 2 - player.width / 2

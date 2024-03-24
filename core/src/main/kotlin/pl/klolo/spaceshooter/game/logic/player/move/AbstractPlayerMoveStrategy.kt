@@ -6,10 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import pl.klolo.spaceshooter.game.common.execute
 import pl.klolo.spaceshooter.game.engine.GameEngine.Companion.applicationConfiguration
 import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.logic.PlayerChangePosition
 import pl.klolo.spaceshooter.game.logic.player.Player
 
 abstract class AbstractPlayerMoveStrategy(
-    private val player: Player
+    private val player: Player,
+    private val eventBus: EventBus
 ) {
 
     protected var playerSpeed: Float = 0f
@@ -40,6 +42,8 @@ abstract class AbstractPlayerMoveStrategy(
         if (player.x > Gdx.graphics.width.toFloat()) {
             player.x = Gdx.graphics.width.toFloat() - player.width
         }
+
+        eventBus.sendEvent(PlayerChangePosition(player.x, player.y))
     }
 
     protected fun move(x: Float, moveDuration: Float) {

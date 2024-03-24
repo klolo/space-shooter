@@ -2,6 +2,7 @@ package pl.klolo.spaceshooter.game.engine.entity
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import java.util.UUID
 
 interface Entity {
 
@@ -9,7 +10,7 @@ interface Entity {
 
     val layer: Int
 
-    val id: Int
+    val id: String
 
     var shouldBeRemove: Boolean
 

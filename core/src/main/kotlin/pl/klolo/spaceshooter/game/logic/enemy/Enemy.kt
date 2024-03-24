@@ -20,45 +20,42 @@ import pl.klolo.spaceshooter.game.engine.entity.createEntity
 import pl.klolo.spaceshooter.game.engine.entity.isPlayerLaser
 import pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
+import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 import pl.klolo.spaceshooter.game.logic.AddPoints
+import pl.klolo.spaceshooter.game.logic.Bullet
 import pl.klolo.spaceshooter.game.logic.Collision
+import pl.klolo.spaceshooter.game.logic.Direction
 import pl.klolo.spaceshooter.game.logic.DisableDoublePoints
 import pl.klolo.spaceshooter.game.logic.EnableDoublePoints
 import pl.klolo.spaceshooter.game.logic.EnemyDestroyed
 import pl.klolo.spaceshooter.game.logic.EnemyOutOfScreen
-import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.RegisterEntity
-import pl.klolo.spaceshooter.game.logic.Bullet
-import pl.klolo.spaceshooter.game.logic.Direction
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessageConfiguration
 import pl.klolo.spaceshooter.game.logic.helper.PopupMessages
-import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 
-class Enemy(
+open class Enemy(
     private val entityRegistry: EntityRegistry,
     private val gamePhysics: GamePhysics,
     private val eventBus: EventBus,
     private val gameLighting: GameLighting,
     entityConfiguration: EntityConfiguration,
     sprite: Sprite
-) : AbstractEnemy(entityRegistry, gamePhysics, eventBus, gameLighting, entityConfiguration, sprite) {
+) : AbstractEnemy(gameLighting, entityConfiguration, sprite) {
 
-    private val explosionConfiguration = entityRegistry.getConfigurationById("explosion")
-    private var explosionLights = ExplosionEffect(gameLighting, 50f)
-    private var popupMessages: PopupMessages = PopupMessages(entityRegistry, eventBus)
-
-    private var explosion: ParticleEntity? = null
-    private var light: PointLight? = null
-
-    private lateinit var physicsShape: CircleShape
-    private lateinit var body: Body
-    private var life: Int = 0
-    private var doublePoints = false
-    private val lifeFactory = 20
-
-    private val lightDistance = 40f
-    private val lightDistanceDistanceAfterExplosion = 500f
-    private val isAboveScreen: Boolean
+    protected val explosionConfiguration = entityRegistry.getConfigurationById("explosion")
+    protected var explosionLights = ExplosionEffect(gameLighting, 50f)
+    protected var popupMessages: PopupMessages = PopupMessages(entityRegistry, eventBus)
+    protected var explosion: ParticleEntity? = null
+    protected var light: PointLight? = null
+    protected lateinit var physicsShape: CircleShape
+    protected lateinit var body: Body
+    protected var life: Int = 0
+    protected var doublePoints = false
+    protected var lifeFactory = 20
+    protected var lightDistance = 40f
+    protected val lightDistanceDistanceAfterExplosion = 500f
+    protected val isAboveScreen: Boolean
         get() = y > getScreenHeight()
 
     override fun onDispose() {
@@ -96,7 +93,7 @@ class Enemy(
             .onEvent<DisableDoublePoints> { doublePoints = false }
     }
 
-    private fun onCollision(it: Collision) {
+    fun onCollision(it: Collision) {
         if (isAboveScreen) {
             return
         }
@@ -107,24 +104,24 @@ class Enemy(
 
             if (life <= 0) {
                 onDestroyEnemy()
-            } else {
+            }
+            else {
                 explosionLights.addLight(this)
             }
         }
     }
 
-    private fun shootOnPosition(laserConfiguration: EntityConfiguration) {
+    open fun shootOnPosition(laserConfiguration: EntityConfiguration) {
         if (isAboveScreen) {
             return
         }
 
         val bulletXPosition = x + width / 2 // width of the enemy
-        val bulletYPosition = y - height / 2
+        val bulletYPosition = y + (height / 2) - 50
 
         val bulletEntity: SpriteEntity = createEntity<SpriteEntity>(laserConfiguration).apply {
-            x = bulletXPosition - width / 2 // width of the bullet
+            x = bulletXPosition
             y = bulletYPosition
-
         }
 
         val bullet = bulletEntity as Bullet
@@ -134,7 +131,7 @@ class Enemy(
         eventBus.sendEvent(RegisterEntity(bulletEntity))
     }
 
-    private fun onDestroyEnemy() {
+    open fun onDestroyEnemy() {
         clearActions()
         showExplosion()
         showPopup()
@@ -146,7 +143,7 @@ class Enemy(
         eventBus.sendEvent(AddPoints(height.toInt()))
     }
 
-    private fun onDestroyBecauseOutScreen() {
+    protected fun onDestroyBecauseOutScreen() {
         clearActions()
         display = false
         shouldBeRemove = true
@@ -177,7 +174,7 @@ class Enemy(
         addAction(fadeOut(explosionLightFadeOutTime))
     }
 
-    override fun onUpdate(delta: Float)  {
+    override fun onUpdate(delta: Float) {
         light?.setPosition(x + width / 2, y + height / 2)
         body.setTransform(x + width / 2, y + height / 2, 0.0f)
         explosionLights.updateLight()
@@ -187,6 +184,7 @@ class Enemy(
         }
 
         updateExplosion()
+        super.onUpdate(delta)
     }
 
     private fun updateLightAfterDestroyedEnemy() {
@@ -204,7 +202,7 @@ class Enemy(
         explosion?.apply { this.effect.setPosition(currentX, currentY) }
     }
 
-    private fun createPhysics() {
+    fun createPhysics() {
         body = gamePhysics.createDynamicBody()
         physicsShape = CircleShape().apply { radius = width / 2 }
         val fixture = body.createFixture(gamePhysics.getStandardFixtureDef(physicsShape))

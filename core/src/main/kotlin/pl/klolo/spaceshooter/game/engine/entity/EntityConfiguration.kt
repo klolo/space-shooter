@@ -33,9 +33,6 @@ data class EntityConfiguration(
     /** Order on stage */
     var layer: Int = 1,
 
-    /** Order on stage */
-    var id: Int = ++entityCounter,
-
     /** If true initializeMoving function on logic is called on loading game */
     var initOnCreate: Boolean = false,
 

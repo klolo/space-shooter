@@ -36,7 +36,7 @@ class Stage(
 
     private fun subscribe() {
         eventBus
-            .subscribe(-1)
+            .subscribe("Stage")
             .onEvent<OpenMainMenu> {
                 switchStage("entities/menu-entities.json")
             }

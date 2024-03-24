@@ -7,8 +7,9 @@ import pl.klolo.spaceshooter.game.logic.player.Player
 import kotlin.math.abs
 
 class AndroidPlayerMoveStrategy(
-    private val player: Player
-) : AbstractPlayerMoveStrategy(player) {
+    private val player: Player,
+    eventBus: EventBus
+) : AbstractPlayerMoveStrategy(player, eventBus) {
 
     private var accelerationFactor = 0f
 

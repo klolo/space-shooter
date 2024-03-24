@@ -21,28 +21,13 @@ class HUD(
     private var points = 0
     private var doublePoints = false
 
-    private fun initPointLabel(): TextEntity {
-        return (createEntity(textConfiguration) as TextEntity)
-            .apply {
-                text = "0"
-                eventBus.sendEvent(RegisterEntity(this))
-            }
-    }
-
-    private fun initBonusLabel(): TextEntity {
-        return (createEntity(textConfiguration) as TextEntity)
-            .apply {
-                text = ""
-                eventBus.sendEvent(RegisterEntity(this))
-            }
-    }
-
     override fun onDispose() {
         pointsLabel.onDispose()
     }
 
     override fun onInitialize() {
-        Gdx.app.debug(this.javaClass.name, "createSubscription")
+        initPointLabel()
+        initBonusLabel()
 
         eventBus
             .subscribe(id)
@@ -62,6 +47,7 @@ class HUD(
         val leftMargin = 20f
         pointsLabel.x = leftMargin
         pointsLabel.y = Gdx.graphics.height.toFloat() - pointsLabel.getFontHeight() * 1.2f
+        super.onUpdate(delta)
     }
 
     private fun addPoints(it: AddPoints) {
@@ -69,5 +55,21 @@ class HUD(
             true -> points + (it.points * 2)
             false -> points + it.points
         }
+    }
+
+    private fun initPointLabel(): TextEntity {
+        return (createEntity(textConfiguration) as TextEntity)
+            .apply {
+                text = "0"
+                eventBus.sendEvent(RegisterEntity(this))
+            }
+    }
+
+    private fun initBonusLabel(): TextEntity {
+        return (createEntity(textConfiguration) as TextEntity)
+            .apply {
+                text = ""
+                eventBus.sendEvent(RegisterEntity(this))
+            }
     }
 }

@@ -10,6 +10,7 @@ fun isShieldByName(entity: Entity): Boolean {
 
 fun isEnemyByName(entity: Entity): Boolean {
     return entity.uniqueName.contains("enemy")
+            || entity.uniqueName.contains("boss")
 }
 
 fun isEnemyLaser(entity: Entity): Boolean {
