@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.PolygonShape
-import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.Colors.blueLight
 import pl.klolo.spaceshooter.game.common.executeAfterDelay
-import pl.klolo.spaceshooter.game.engine.Profile
 import pl.klolo.spaceshooter.game.engine.ProfileHolder
 import pl.klolo.spaceshooter.game.engine.SoundEffect
 import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
@@ -22,6 +20,7 @@ import pl.klolo.spaceshooter.game.engine.entity.isObstacle
 import pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 import pl.klolo.spaceshooter.game.logic.AddPlayerLife
 import pl.klolo.spaceshooter.game.logic.AddPoints
@@ -85,7 +84,6 @@ class Player(
 
     override fun onInitialize() {
         Gdx.app.debug(this.javaClass.name, "createSubscription")
-        y = getPlayerBottomMargin(profileHolder.activeProfile, height)
 
         playerLight = gameLighting.createPointLight(100, Color.WHITE, width, x, y)
         laserConfiguration = entityRegistry.getConfigurationById("laserBlue01")
@@ -96,6 +94,7 @@ class Player(
         moveStrategy = createMoveStrategy(profileHolder.activeProfile, this, eventBus)
         moveStrategy.initialize()
         moveStrategy.subscribeEvents(eventBus)
+        y = moveStrategy.playerBottomMargin()
 
         shieldStrategy = PlayerShieldStrategy(eventBus, this)
         shieldStrategy.subscribeEvents()
@@ -268,10 +267,4 @@ class Player(
         body.createFixture(gamePhysics.getStandardFixtureDef(physicsShape)).userData = this
     }
 
-    private fun getPlayerBottomMargin(profile: Profile, playerHeight: Float): Float {
-        return when (profile) {
-            Profile.ANDROID -> playerHeight * 0.8f
-            else -> playerHeight * 0.5f
-        }
-    }
 }

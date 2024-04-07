@@ -5,16 +5,21 @@ import com.badlogic.gdx.InputProcessor
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.KeyEnterReleased
 import pl.klolo.spaceshooter.game.logic.EscapePressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowDownPressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowDownReleased
 import pl.klolo.spaceshooter.game.logic.KeyArrowLeftPressed
 import pl.klolo.spaceshooter.game.logic.KeyArrowLeftReleased
 import pl.klolo.spaceshooter.game.logic.KeyArrowRightPressed
 import pl.klolo.spaceshooter.game.logic.KeyArrowRightReleased
+import pl.klolo.spaceshooter.game.logic.KeyArrowUpPressed
+import pl.klolo.spaceshooter.game.logic.KeyArrowUpReleased
 import pl.klolo.spaceshooter.game.logic.KeySpaceReleased
 
 /**
  * TODO: Przeniesc do desktop. Klasa zalezna od platformy gdzie jest uruchamiana gra.
  */
 class KeyboardProcessor(private val eventBus: EventBus) : InputProcessor {
+
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         return true
     }
@@ -35,10 +40,22 @@ class KeyboardProcessor(private val eventBus: EventBus) : InputProcessor {
         return true
     }
 
+    override fun keyDown(keycode: Int): Boolean {
+        when (keycode) {
+            Input.Keys.LEFT -> eventBus.sendEvent(KeyArrowLeftPressed)
+            Input.Keys.RIGHT -> eventBus.sendEvent(KeyArrowRightPressed)
+            Input.Keys.DOWN -> eventBus.sendEvent(KeyArrowDownPressed)
+            Input.Keys.UP -> eventBus.sendEvent(KeyArrowUpPressed)
+        }
+        return true
+    }
+
     override fun keyUp(keycode: Int): Boolean {
         when (keycode) {
             Input.Keys.LEFT -> eventBus.sendEvent(KeyArrowLeftReleased)
             Input.Keys.RIGHT -> eventBus.sendEvent(KeyArrowRightReleased)
+            Input.Keys.UP -> eventBus.sendEvent(KeyArrowUpReleased)
+            Input.Keys.DOWN -> eventBus.sendEvent(KeyArrowDownReleased)
             Input.Keys.SPACE -> eventBus.sendEvent(KeySpaceReleased)
             Input.Keys.ENTER -> eventBus.sendEvent(KeyEnterReleased)
             Input.Keys.ESCAPE -> eventBus.sendEvent(EscapePressed)
@@ -47,14 +64,6 @@ class KeyboardProcessor(private val eventBus: EventBus) : InputProcessor {
     }
 
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-        return true
-    }
-
-    override fun keyDown(keycode: Int): Boolean {
-        when (keycode) {
-            Input.Keys.LEFT -> eventBus.sendEvent(KeyArrowLeftPressed)
-            Input.Keys.RIGHT -> eventBus.sendEvent(KeyArrowRightPressed)
-        }
         return true
     }
 

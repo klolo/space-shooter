@@ -4,7 +4,13 @@ import pl.klolo.spaceshooter.game.engine.Profile
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.player.Player
 
-enum class Direction { LEFT, RIGHT, NONE }
+enum class Direction {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    NONE
+}
 
 fun createMoveStrategy(profile: Profile, player: Player, eventBus: EventBus) =
     when (profile) {

@@ -42,12 +42,12 @@ class AndroidPlayerMoveStrategy(
 
         if (accelerometerX < 0 && player.x < Gdx.graphics.width.toFloat()) {
             direction = Direction.RIGHT
-            move(player.x + Gdx.graphics.width.toFloat(), playerMoveDuration)
+            moveX(player.x + Gdx.graphics.width.toFloat(), playerMoveDuration)
         }
 
         if (accelerometerX > 0 && player.x > 0) {
             direction = Direction.LEFT
-            move(player.x - Gdx.graphics.width.toFloat(), playerMoveDuration)
+            moveX(player.x - Gdx.graphics.width.toFloat(), playerMoveDuration)
         }
     }
 
@@ -68,4 +68,7 @@ class AndroidPlayerMoveStrategy(
 
         return (2 * speed - (absX / detectionRange) * speed) - playerAcceleration
     }
+
+    override fun playerBottomMargin() = player.height * 0.8f
+
 }

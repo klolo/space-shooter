@@ -1,4 +1,4 @@
-package pl.klolo.spaceshooter.game.logic
+package pl.klolo.spaceshooter.game.logic.player.shield
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -12,6 +12,11 @@ import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.logic.enemy.ExplosionEffect
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
+import pl.klolo.spaceshooter.game.logic.DisableShield
+import pl.klolo.spaceshooter.game.logic.EnableShield
+import pl.klolo.spaceshooter.game.logic.LaserHitInShield
+import pl.klolo.spaceshooter.game.logic.PlaySound
+import pl.klolo.spaceshooter.game.logic.PlayerChangePosition
 
 class Shield(
     private val gamePhysics: GamePhysics,
@@ -31,8 +36,8 @@ class Shield(
         eventBus
             .subscribe(id)
             .onEvent<PlayerChangePosition> {
-                x = it.x - width / 2
-                y = it.y - height / 2
+                x = it.x - 18
+                y = it.y - 30f // FIXME: how to calculate it properly?
             }
             .onEvent<DisableShield> {
                 Gdx.app.debug(this.javaClass.name, "disabling shield...")
@@ -57,7 +62,7 @@ class Shield(
     }
 
     override fun onUpdate(delta: Float) {
-        body.setTransform(x + width / 2, y + height / 2, 0.0f)
+        body.setTransform(x, y, 0.0f)
         explosionLights.updateLight()
     }
 

@@ -7,10 +7,15 @@ sealed class Event()
 
 // keyboard
 object KeyArrowLeftReleased : Event()
-
 object KeyArrowRightReleased : Event()
+object KeyArrowUpReleased : Event()
+object KeyArrowDownReleased : Event()
+
 object KeyArrowLeftPressed : Event()
 object KeyArrowRightPressed : Event()
+object KeyArrowUpPressed : Event()
+object KeyArrowDownPressed : Event()
+
 object KeySpaceReleased : Event()
 object KeyEnterReleased : Event()
 object EscapePressed : Event()

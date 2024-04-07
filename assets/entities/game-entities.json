@@ -5,8 +5,8 @@
     "file": "ship.png",
     "x": 250.0,
     "y": 50.0,
-    "width": 75.0,
-    "height": 75.0,
+    "width": 80.0,
+    "height": 80.0,
     "layer": 3,
     "initOnCreate": true
   },
@@ -201,7 +201,7 @@
   },
   {
     "uniqueName": "shield1",
-    "javaClass": "pl.klolo.spaceshooter.game.logic.Shield",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.player.shield.Shield",
     "file": "shield1.png",
     "width": 110,
     "height": 120,
