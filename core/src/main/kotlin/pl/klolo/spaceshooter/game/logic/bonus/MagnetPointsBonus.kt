@@ -3,7 +3,7 @@ package pl.klolo.spaceshooter.game.logic.bonus
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.addSequence
 import pl.klolo.spaceshooter.game.common.execute
 import pl.klolo.spaceshooter.game.common.executeAfterDelay

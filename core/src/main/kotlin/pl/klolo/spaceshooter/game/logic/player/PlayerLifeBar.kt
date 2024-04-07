@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import pl.klolo.spaceshooter.game.engine.assetManager
 import pl.klolo.spaceshooter.game.engine.entity.ActorEntity
 import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
-import pl.klolo.spaceshooter.game.logic.ChangePlayerLfeLevel
+import pl.klolo.spaceshooter.game.logic.ChangePlayerLifeLevel
 import pl.klolo.spaceshooter.game.engine.event.EventBus
+import kotlin.math.max
 
 class PlayerLifeBar(
     private val eventBus: EventBus,
@@ -35,7 +36,7 @@ class PlayerLifeBar(
 
         eventBus
             .subscribe(id)
-            .onEvent<ChangePlayerLfeLevel> {
+            .onEvent<ChangePlayerLifeLevel> {
                 lifeAmount = it.actualPlayerLifeLevel / 100f
             }
     }
@@ -65,7 +66,9 @@ class PlayerLifeBar(
     }
 
     private fun getLifebarColor(): Color {
-        return Color(0.9f, lifeAmount, lifeAmount, 1f)
+        // since 80% of player life we are start reducing blue and green color but not more then 50%
+        val colorAmount = max(lifeAmount + 0.2f, 0.5f)
+        return Color(1.0f, colorAmount, colorAmount, 1f)
     }
 
     override fun onUpdate(delta: Float) {

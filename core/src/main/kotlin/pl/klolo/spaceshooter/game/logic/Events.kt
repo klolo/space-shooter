@@ -22,7 +22,7 @@ class BossCreated: Event()
 class BossDestroyed: Event()
 
 class PlayerChangePosition(val x: Float = 0f, val y: Float = 0f) : Event()
-class ChangePlayerLfeLevel(val actualPlayerLifeLevel: Int = 100) : Event()
+class ChangePlayerLifeLevel(val actualPlayerLifeLevel: Int = 100) : Event()
 class AddPoints(val points: Int = 0) : Event()
 class AddPlayerLife(val lifeAmount: Int = 0) : Event()
 

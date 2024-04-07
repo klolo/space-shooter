@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.addForeverSequence
 import pl.klolo.spaceshooter.game.common.addSequence
@@ -41,7 +41,7 @@ open class Enemy(
     private val gameLighting: GameLighting,
     entityConfiguration: EntityConfiguration,
     sprite: Sprite
-) : AbstractEnemy(gameLighting, entityConfiguration, sprite) {
+) : AbstractEnemy(entityConfiguration, sprite) {
 
     protected val explosionConfiguration = entityRegistry.getConfigurationById("explosion")
     protected var explosionLights = ExplosionEffect(gameLighting, 50f)

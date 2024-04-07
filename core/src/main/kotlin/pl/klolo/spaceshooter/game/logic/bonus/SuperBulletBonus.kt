@@ -1,7 +1,7 @@
 package pl.klolo.spaceshooter.game.logic.bonus
 
 import com.badlogic.gdx.graphics.g2d.Sprite
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics

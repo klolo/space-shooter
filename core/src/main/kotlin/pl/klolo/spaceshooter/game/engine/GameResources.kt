@@ -2,6 +2,8 @@ package pl.klolo.spaceshooter.game.engine
 
 val textures = arrayOf(
         "lifebar.png",
+        "obstacles/rock1.png",
+        "obstacles/rock2.png",
         "enemy/enemyRed1.png",
         "enemy/enemyRed2.png",
         "enemy/enemyRed3.png",

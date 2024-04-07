@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.engine.physics.ContactListener
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 import pl.klolo.spaceshooter.game.logic.Highscore
 

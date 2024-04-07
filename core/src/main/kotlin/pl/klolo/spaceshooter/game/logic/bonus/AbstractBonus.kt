@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.addForeverSequence
 import pl.klolo.spaceshooter.game.common.addSequence

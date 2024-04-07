@@ -47,7 +47,6 @@ abstract class AbstractPlayerMoveStrategy(
     }
 
     protected fun move(x: Float, moveDuration: Float) {
-        println("move to: $x")
         player.x += 1f;
         player.removeAction(currentMove)
         currentMove = moveTo(x, player.y, moveDuration)

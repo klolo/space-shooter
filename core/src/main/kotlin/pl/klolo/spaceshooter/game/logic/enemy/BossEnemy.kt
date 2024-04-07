@@ -3,7 +3,7 @@ package pl.klolo.spaceshooter.game.logic.enemy
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.addForeverSequence
 import pl.klolo.spaceshooter.game.common.addSequence
@@ -15,7 +15,6 @@ import pl.klolo.spaceshooter.game.engine.entity.createEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
 import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
-import pl.klolo.spaceshooter.game.logic.AddPoints
 import pl.klolo.spaceshooter.game.logic.BossCreated
 import pl.klolo.spaceshooter.game.logic.BossDestroyed
 import pl.klolo.spaceshooter.game.logic.Bullet

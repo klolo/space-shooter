@@ -25,6 +25,7 @@ import kotlin.math.max
 const val speedOfTheDecreasingEnemyShootDelayPerCreatedEnemy = 500f
 const val minimalShootDelay = 0.8f
 
+@Suppress("unused")
 class EnemyGenerator(
     private val eventBus: EventBus,
     private val entityRegistry: EntityRegistry,
@@ -58,7 +59,7 @@ class EnemyGenerator(
 
         Gdx.app.debug(this.javaClass.name, "createSubscription")
 
-        var generationAction = generationSequence()
+        val generationAction = generationSequence()
         addAction(generationAction)
 
         eventBus
@@ -90,13 +91,15 @@ class EnemyGenerator(
     }
 
     private fun generationSequence() = forever(
-        runSequence(
-            execute {
-                if (enemiesCount.get() < maxEnemiesOnStage) {
-                    generateEnemy()
-                }
-            },
-            delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
+        forever(
+            runSequence(
+                execute {
+                    if (enemiesCount.get() < maxEnemiesOnStage) {
+                        generateEnemy()
+                    }
+                },
+                delay(2f / random.nextInt(4)) // FIXME: Random.nextFloat doesnt work
+            )
         )
     )
 

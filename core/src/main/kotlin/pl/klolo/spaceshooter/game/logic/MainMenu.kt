@@ -6,7 +6,7 @@ import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.engine.Profile
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.TextEntity
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.engine.FontSize
 import pl.klolo.spaceshooter.game.engine.ProfileHolder
 import pl.klolo.spaceshooter.game.engine.Song
@@ -16,7 +16,6 @@ import pl.klolo.spaceshooter.game.engine.entity.EntityConfiguration
 import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.engine.entity.createEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
-
 
 class PulsingLightAnimation(private val light: Light) {
     var delta = 0f

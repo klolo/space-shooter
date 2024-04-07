@@ -17,6 +17,10 @@ fun isEnemyLaser(entity: Entity): Boolean {
     return entity.uniqueName.contains("laserRed")
 }
 
+fun isObstacle(entity: Entity): Boolean {
+    return entity.uniqueName.contains("rock")
+}
+
 fun isPlayerLaser(entity: Entity): Boolean {
     return entity.uniqueName.contains("laserBlue")
 }

@@ -5,8 +5,8 @@
     "file": "ship.png",
     "x": 250.0,
     "y": 50.0,
-    "width": 50.0,
-    "height": 60.0,
+    "width": 75.0,
+    "height": 75.0,
     "layer": 3,
     "initOnCreate": true
   },
@@ -66,8 +66,13 @@
     "layer": -1
   },
   {
-    "uniqueName": "enemyBase",
+    "uniqueName": "enemyGenerator",
     "javaClass": "pl.klolo.spaceshooter.game.logic.enemy.EnemyGenerator",
+    "initOnCreate": true
+  },
+  {
+    "uniqueName": "obstaclesGenerator",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.obstacles.ObstaclesGenerator",
     "initOnCreate": true
   },
   {
@@ -89,6 +94,22 @@
     "uniqueName": "bonusManager",
     "javaClass": "pl.klolo.spaceshooter.game.logic.bonus.BonusGenerator",
     "initOnCreate": true
+  },
+  {
+    "uniqueName": "rock1",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.obstacles.Rock",
+    "file": "obstacles/rock1.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
+  },
+  {
+    "uniqueName": "rock2",
+    "javaClass": "pl.klolo.spaceshooter.game.logic.obstacles.Rock",
+    "file": "obstacles/rock2.png",
+    "width": 20,
+    "height": 20,
+    "layer": -1
   },
   {
     "uniqueName": "enemyRed1",

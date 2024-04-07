@@ -2,10 +2,11 @@ package pl.klolo.spaceshooter.game.logic.player
 
 import box2dLight.PointLight
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.PolygonShape
-import pl.klolo.game.physics.GameLighting
+import pl.klolo.spaceshooter.game.engine.physics.GameLighting
 import pl.klolo.spaceshooter.game.common.Colors
 import pl.klolo.spaceshooter.game.common.Colors.blueLight
 import pl.klolo.spaceshooter.game.common.executeAfterDelay
@@ -17,6 +18,7 @@ import pl.klolo.spaceshooter.game.engine.entity.EntityRegistry
 import pl.klolo.spaceshooter.game.engine.entity.createEntity
 import pl.klolo.spaceshooter.game.engine.entity.isEnemyLaser
 import pl.klolo.spaceshooter.game.engine.entity.isExtraPointsBonus
+import pl.klolo.spaceshooter.game.engine.entity.isObstacle
 import pl.klolo.spaceshooter.game.engine.entity.kind.ParticleEntity
 import pl.klolo.spaceshooter.game.engine.entity.kind.SpriteEntity
 import pl.klolo.spaceshooter.game.engine.event.EventBus
@@ -24,7 +26,7 @@ import pl.klolo.spaceshooter.game.engine.physics.GamePhysics
 import pl.klolo.spaceshooter.game.logic.AddPlayerLife
 import pl.klolo.spaceshooter.game.logic.AddPoints
 import pl.klolo.spaceshooter.game.logic.Bullet
-import pl.klolo.spaceshooter.game.logic.ChangePlayerLfeLevel
+import pl.klolo.spaceshooter.game.logic.ChangePlayerLifeLevel
 import pl.klolo.spaceshooter.game.logic.Collision
 import pl.klolo.spaceshooter.game.logic.DisableDoublePoints
 import pl.klolo.spaceshooter.game.logic.DisableSuperBullet
@@ -43,7 +45,6 @@ import pl.klolo.spaceshooter.game.logic.helper.PopupMessages
 import pl.klolo.spaceshooter.game.logic.player.move.AbstractPlayerMoveStrategy
 import pl.klolo.spaceshooter.game.logic.player.move.createMoveStrategy
 import pl.klolo.spaceshooter.game.logic.player.shield.PlayerShieldStrategy
-import java.util.UUID
 
 const val bonusLifetime = 20f
 
@@ -86,7 +87,7 @@ class Player(
         Gdx.app.debug(this.javaClass.name, "createSubscription")
         y = getPlayerBottomMargin(profileHolder.activeProfile, height)
 
-        playerLight = gameLighting.createPointLight(100, blueLight, 50f, x, y)
+        playerLight = gameLighting.createPointLight(100, Color.WHITE, width, x, y)
         laserConfiguration = entityRegistry.getConfigurationById("laserBlue01")
 
         createPhysics()
@@ -149,7 +150,7 @@ class Player(
             eventBus.sendEvent(PlaySound(SoundEffect.YIPEE))
         }
 
-        eventBus.sendEvent(ChangePlayerLfeLevel(lifeLevel))
+        eventBus.sendEvent(ChangePlayerLifeLevel(lifeLevel))
         popupMessages.show(this, PopupMessageConfiguration("+${it.lifeAmount}%"))
     }
 
@@ -161,8 +162,8 @@ class Player(
         laserConfiguration = entityRegistry.getConfigurationById("laserBlue02")
         bulletPower *= 4
         enabledSuperBulletCounter++
-        playerLight.distance = 150f
-        playerLight.color = Colors.gold
+        playerLight.distance = width * 2
+        playerLight.color = Colors.white
     }
 
     private fun disableSuperBullet() {
@@ -171,7 +172,7 @@ class Player(
             Gdx.app.debug(this.javaClass.name, "Disable super bullet.")
             laserConfiguration = entityRegistry.getConfigurationById("laserBlue01")
             bulletPower = defaultBulletPower
-            playerLight.distance = 70f
+            playerLight.distance = width
             playerLight.color = blueLight
             eventBus.sendEvent(DisableSuperBullet)
         }
@@ -179,7 +180,7 @@ class Player(
 
     private fun onCollision(it: Collision) {
         val collidedEntity = it.entity!!
-        if (isEnemyLaser(collidedEntity) && !shieldStrategy.hasShield && !isImmortal) {
+        if ((isEnemyLaser(collidedEntity) || isObstacle(collidedEntity)) && !shieldStrategy.hasShield && !isImmortal) {
             eventBus.sendEvent(PlaySound(SoundEffect.PLAYER_COLLISION))
 
             lifeLevel -= 10
@@ -193,7 +194,7 @@ class Player(
             }
 
             explosionLights.addLight(this)
-            eventBus.sendEvent(ChangePlayerLfeLevel(lifeLevel))
+            eventBus.sendEvent(ChangePlayerLifeLevel(lifeLevel))
             isImmortal = true
 
             if (lifeLevel <= 0) {
@@ -270,7 +271,7 @@ class Player(
     private fun getPlayerBottomMargin(profile: Profile, playerHeight: Float): Float {
         return when (profile) {
             Profile.ANDROID -> playerHeight * 0.8f
-            else -> playerHeight
+            else -> playerHeight * 0.5f
         }
     }
 }

@@ -1,4 +1,4 @@
-package pl.klolo.game.physics
+package pl.klolo.spaceshooter.game.engine.physics
 
 import box2dLight.PointLight
 import box2dLight.RayHandler

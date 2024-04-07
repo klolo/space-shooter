@@ -17,8 +17,11 @@ class HUD(
 ) : ActorEntity(entityConfiguration) {
 
     private val textConfiguration = entityRegistry.getConfigurationById("text")
+
     private val pointsLabel: TextEntity by lazy { initPointLabel() }
+
     private var points = 0
+
     private var doublePoints = false
 
     override fun onDispose() {
